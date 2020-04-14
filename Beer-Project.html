@@ -510,28 +510,28 @@ confusionMatrix(test$Type,classifications)</code></pre>
 ## 
 ##           Reference
 ## Prediction Ale IPA
-##        Ale 271  26
-##        IPA  28 135
-##                                           
-##                Accuracy : 0.8826          
-##                  95% CI : (0.8496, 0.9106)
-##     No Information Rate : 0.65            
-##     P-Value [Acc &gt; NIR] : &lt;2e-16          
-##                                           
-##                   Kappa : 0.7427          
-##                                           
-##  Mcnemar&#39;s Test P-Value : 0.8918          
-##                                           
-##             Sensitivity : 0.9064          
-##             Specificity : 0.8385          
-##          Pos Pred Value : 0.9125          
-##          Neg Pred Value : 0.8282          
-##              Prevalence : 0.6500          
-##          Detection Rate : 0.5891          
-##    Detection Prevalence : 0.6457          
-##       Balanced Accuracy : 0.8724          
-##                                           
-##        &#39;Positive&#39; Class : Ale             
+##        Ale 258  29
+##        IPA  32 141
+##                                          
+##                Accuracy : 0.8674         
+##                  95% CI : (0.8329, 0.897)
+##     No Information Rate : 0.6304         
+##     P-Value [Acc &gt; NIR] : &lt;2e-16         
+##                                          
+##                   Kappa : 0.7165         
+##                                          
+##  Mcnemar&#39;s Test P-Value : 0.7979         
+##                                          
+##             Sensitivity : 0.8897         
+##             Specificity : 0.8294         
+##          Pos Pred Value : 0.8990         
+##          Neg Pred Value : 0.8150         
+##              Prevalence : 0.6304         
+##          Detection Rate : 0.5609         
+##    Detection Prevalence : 0.6239         
+##       Balanced Accuracy : 0.8595         
+##                                          
+##        &#39;Positive&#39; Class : Ale            
 ## </code></pre>
 <pre class="r"><code>#filter out the data in order to perform Ttest on the Ale &amp; IPA mean to show they are different. The results of the ttest show IPA &amp; ABV have different profiles for IBV &amp; ABV
 #this gives us more confidence in using KNN to classify a beer as ALE or IPA because there is a stat difference between the beers. 
