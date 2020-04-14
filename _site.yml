@@ -1,8 +1,8 @@
-name: "my-website"
-navbar:
-  title: "My Website"
-  left:
-    - text: "Home"
-      href: index.html
-    - text: "Beer Analysis"
-      href: Beer-Project.html
+ name: "Project-Website"
+ navbar:
+   title: "Project Website for DS6306"
+   left:
+     - text: "Home"
+       href: index.html
+     - text: "Beer Analysis"
+       href: Beer-Project.html
