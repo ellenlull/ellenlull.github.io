@@ -5,4 +5,4 @@ navbar:
     - text: "Home"
       href: index.html
     - text: "Beer Analysis"
-      href: Beer Project.html
+      href: Beer-Project.html
