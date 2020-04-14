@@ -1,0 +1,10 @@
+---
+title: "EllenTest Website"
+author: "Ellen Lull"
+date: "4/14/2020"
+output: html_document
+---
+# Simple Website to See if I can finally get this to work
+## Note the six lines about are YML tags
+###  We will knit to html
+Then push index.html to github
