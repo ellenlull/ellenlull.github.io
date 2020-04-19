@@ -1,0 +1,663 @@
+---
+title: "CaseStudy2Lull"
+author: "Ellen Lull"
+date: "4/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# MSDS 6306 Case Study 2:   Analysis of Employee Data for Attrition and Salary Predictions
+## Ellen Lull Section 401
+### Read Files and Set up Libraries
+
+Executive Summary
+This is a DDS Analytics project to predict Attrition and Monthly Income based on data 870 Employee Data Records.  This data is to be used to create a model for classifying attrition by significant variables.  Next it creates a prediction model for Attrition based on existing variables.   It will identify the top three turnover predictors.  Then we will create a model to predict monthly income for each of the employees.   Predictions on test datasets are output to CSV files for both Attrition and Monthly Income.   Finally, we will be looking at three Job roles with high level jobs that have low attrition levels and their employee job satisfaction ratings. This project consists of analysis to cover all of these areas and a video presentation
+```{r Initialize}
+library(tidyverse)
+library(ggplot2)
+library(stringr)
+library(dplyr)
+library(caret)
+library(class)
+library(randomForest)
+library(glmnet)
+library(e1071)
+
+
+employee <- read.delim("C:/School Stuff/DS/Doing DS/Project2/CaseStudy2-data.csv",header=TRUE,sep=",")
+
+employeenoinc <- read.delim("C:/School Stuff/DS/Doing DS/Project2/CaseStudy2CompSet No Salary.csv",header=TRUE,sep=",")
+
+employeenoatt<- read.delim("C:/School Stuff/DS/Doing DS/Project2/CaseStudy2CompSet No Attrition.csv",header=TRUE,sep=",") 
+
+```
+### EDA:  Run Pairs Plot for Continuous Variables
+
+```{r Pairs Plot}
+employee_reduced = employee[,c('Age','DailyRate','DistanceFromHome','Attrition','MonthlyRate','PercentSalaryHike','YearsInCurrentRole','YearsSinceLastPromotion','YearsWithCurrManager')]
+
+pairs(employee_reduced,col=employee$Attrition,main='Employee Data (Continuous variables only) Colored by Attrition')
+```
+
+Plot Every Variable as Related to Attrition and Monthly Income
+### EDA:  Plot Relationships related to Attrition and Monthly Income for all 36 Variables
+
+```{r Plot Everything!}
+employee %>% ggplot(aes(x = Age,fill=Attrition)) + geom_histogram(binwidth=2) + ggtitle("Attrition Count by Age") +
+xlab ("Age")
+
+employee %>% ggplot(aes(x = Age,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income and Attrition by Age") +
+    xlab ("Age")
+
+employee %>% ggplot(aes(x = BusinessTravel,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income and attrition by Travel") +
+    xlab ("Business Travel")
+
+employee %>% ggplot(aes(x = BusinessTravel,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Travel") +
+xlab ("Business Travel")
+
+###  Continous: DailyRate
+employee %>% ggplot(aes(x = DailyRate,fill=Attrition)) + geom_histogram(binwidth=20) + ggtitle("Attrition Count by Daily Rate")
+
+###  Continous: DailyRate
+ 
+employee %>% ggplot(aes(x = DailyRate,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Daily Rate") +
+xlab ("Daily Rate") +
+ylab ("Monthly Income") 
+
+
+### Categorical: Department
+employee %>% ggplot(aes(x = Department,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Department") +
+xlab ("Department") +
+ylab ("Attrition") 
+
+employee %>% ggplot(aes(x = Department,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Department and Attrition") +
+xlab ("Department") +
+ylab ("Monthly Income")
+
+
+### Continuous: DistanceFromHome
+employee %>% ggplot(aes(x = DistanceFromHome,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Distance From Home")
+employee %>% ggplot(aes(x = DistanceFromHome,fill=Attrition)) + geom_histogram(binwidth=4) + ggtitle("Attrition Count by Distance From Home") +
+xlab ("Distance From Home")
+
+employee %>% ggplot(aes(x = DistanceFromHome,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Distance From Home and Attrition") +
+xlab ("Distance From Home") +
+ylab ("Monthly Income")
+
+
+### Categorical: Education
+### Look at further to see < 4 years versus 4/5 years
+employee %>% ggplot(aes(x = Education,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Education")
+
+employee %>% ggplot(aes(x = Education,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Education and Attrition") +
+xlab ("Education") +
+ylab ("Monthly Income")
+
+### Employee Count is always 1
+
+### Continuous: EmployeeNumber 
+
+employee %>% ggplot(aes(x = EmployeeNumber,fill=Attrition)) + geom_histogram(binwidth=20) + ggtitle("Attrition Count by Employee Number") +
+xlab ("Employee Number") 
+
+employee %>% ggplot(aes(x = EmployeeNumber,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Employee Number and Attrition") +
+xlab ("Employee Number") +
+ylab ("Monthly Income")
+
+
+
+### Categorical: EnvironmentSatisfaction
+employee %>% ggplot(aes(x = EnvironmentSatisfaction,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Environment Satisfaction") +
+xlab ("Environment Satisfaction") 
+
+
+employee %>% ggplot(aes(x = EnvironmentSatisfaction,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Environment Satisfaction and Attrition") +
+xlab ("Environment Satisfaction") +
+ylab ("Monthly Income")
+
+
+
+### Categorical: Gender    
+### Males have a higher rate
+
+employee %>% ggplot(aes(x = Gender,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Gender")
+
+employee %>% ggplot(aes(x = Gender,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Gender and Attrition") +
+xlab ("Gender") +
+ylab ("Monthly Income")
+
+
+
+### Continuous: HourlyRate
+
+employee %>% ggplot(aes(x = HourlyRate,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Hourly Rate")
+employee %>% ggplot(aes(x = HourlyRate,fill=Attrition)) + geom_histogram(binwidth=4) + ggtitle("Attrition Count by Hourly Rate")
+
+employee %>% ggplot(aes(x = Gender,HourlyRate,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Hourly Rage and Attrition") +
+xlab ("Hourly Rate") +
+ylab ("Monthly Income")
+
+###  Likely a billing rate 
+
+employee %>% ggplot(aes(x = HourlyRate,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Hourly Rate and Attrition") +
+    xlab ("Hourly Rate") +
+    ylab ("Monthly Income")
+
+### Categorical JobInvolvement
+### Look at high job involvement
+
+employee %>% ggplot(aes(x = JobInvolvement,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Job Involvement")
+
+### Categorical JobLevel
+### Look at High Job Levels
+
+employee %>% ggplot(aes(x = JobLevel,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Job Level")
+
+employee %>% ggplot(aes(x = JobLevel,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Job Level and Attrition") +
+    xlab ("Job Level") +
+    ylab ("Monthly Income")
+
+### Categorical  JobRole
+###  Look at Manager Manufacturing Director and Research Director
+
+employee %>% ggplot(aes(x = JobRole,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Job Role") +
+  theme(axis.text.x=element_text(angle=90, hjust=1))
+
+
+employee %>% ggplot(aes(x = JobRole,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Job Role and Attrition") +
+    xlab ("Job Role") +
+    ylab ("Monthly Income")  
+
+### Categorical JobSatisfaction
+
+employee %>% ggplot(aes(x = JobSatisfaction,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Job Satisfaction") +
+xlab ("Job Satisfaction")
+
+employee %>% ggplot(aes(x = JobSatisfaction,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Job Satisfaction and Attrition") +
+    xlab ("Job Satisfaction") +
+    ylab ("Monthly Income")
+
+
+### Categorical: MaritalStatus
+###  Look at Divorced Women.  Divorced Men lower too
+
+employee %>% ggplot(aes(x = MaritalStatus,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Marital Status")
+
+employee %>% ggplot(aes(x = MaritalStatus,y=Attrition,col=Gender)) + geom_point(pos='Jitter') + ggtitle("Attrition by Marital Status and Gender")
+
+employee %>% ggplot(aes(x = MaritalStatus,y=MonthlyIncome,col=Gender)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Marital Status and Gender") +
+    xlab ("Marital Status") +
+    ylab ("Monthly Income")
+
+
+
+###  Continous: MonthlyIncome
+employee %>% ggplot(aes(x = MonthlyIncome,fill=Attrition)) + geom_histogram(binwidth=100) + ggtitle("Attrition Count by Monthly Income")
+
+employee %>% ggplot(aes(x = Attrition,y=MonthlyIncome,col=Gender)) + geom_point(pos='Jitter') + ggtitle("Attrition by Monthly Income and Gender") +
+    xlab ("Attrition") +
+    ylab ("Monthly Income")
+
+### Continuous:  MonthlyRate	
+employee %>% ggplot(aes(x = MonthlyRate,fill=Attrition)) + geom_histogram(binwidth=200) + ggtitle("Attrition Count by Monthly Rate")
+
+employee %>% ggplot(aes(x = MonthlyRate,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Monthly Rate and Attrition") +
+    xlab ("Monthly Rate") +
+    ylab ("Monthly Income")
+
+###  Catigorical (numeric but only 9): NumCompaniesWorked	
+employee %>% ggplot(aes(x = NumCompaniesWorked,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Number of Companies Worked") +
+ xlab ("Number of companies worked")
+
+employee %>% ggplot(aes(x = NumCompaniesWorked,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Number of Companies Worked and Attrition") +
+    xlab ("Number of Companies Employee has Worked at") +
+    ylab ("Monthly Income")
+
+###  Catigorical Over18	
+##  All over 18
+
+employee %>% ggplot(aes(x = Over18,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Age over 18")
+
+###  Catigorical OverTime	
+ 
+employee %>% ggplot(aes(x = OverTime,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by overtime")
+
+employee %>% ggplot(aes(x = OverTime,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Overtime and Attrition") +
+    xlab ("Overtime") +
+    ylab ("Monthly Income")
+
+
+### Continuous:  PercentSalaryHike
+###  Look at salary hike with interaction of Permformance Rating
+	
+employee %>% ggplot(aes(x = PercentSalaryHike,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Percent Salary Hike")
+
+employee %>% ggplot(aes(x = PercentSalaryHike,y=Attrition,col=PerformanceRating)) + geom_point(pos='Jitter') + ggtitle("Attrition by Percent Salary Hike")
+
+employee %>% ggplot(aes(x = PercentSalaryHike,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Percent Salary Hike and Attrition") +
+    xlab ("Percent Salary Increase") +
+    ylab ("Monthly Income")
+
+
+
+
+###  Catigorical RelationshipSatisfaction	
+ 
+employee %>% ggplot(aes(x = RelationshipSatisfaction,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Relationship Satisfaction") +
+ xlab("Relationship Satisfaction")
+
+employee %>% ggplot(aes(x = RelationshipSatisfaction,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Relationship Satisfaction and Attrition") +
+    xlab ("Relationship Satisfaction") +
+    ylab ("Monthly Income")
+
+###  Catigorical StandardHours	
+ 
+employee %>% ggplot(aes(x = StandardHours,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Standard Hours")
+
+employee %>% ggplot(aes(x = StandardHours,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Standard Hours and Attrition") +
+    xlab ("Standard Hours") +
+    ylab ("Monthly Income")
+
+###  Catigorical StandardHours	
+### Stock Option Level 2
+ 
+employee %>% ggplot(aes(x = StockOptionLevel,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Stock Option Level")
+
+employee %>% ggplot(aes(x = StockOptionLevel,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Stock Option Level and Attrition") +
+    xlab ("Stock Option Level") +
+    ylab ("Monthly Income")
+
+
+
+
+### Continuous:  TotalWorkingYears
+### Obviously strong correlation with Age
+	
+employee %>% ggplot(aes(x = TotalWorkingYears,y=Attrition,col=Age)) + geom_point(pos='Jitter') + ggtitle("Attrition by Total Working Years")
+
+employee %>% ggplot(aes(x = TotalWorkingYears,y=MonthlyIncome,col=Gender)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Total Working Years and Gender") +
+    xlab ("Total Working Years") +
+    ylab ("Monthly Income")
+
+
+### TrainingTimesLastYear; values 1-6
+
+employee %>% ggplot(aes(x = TrainingTimesLastYear,y=Attrition,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Attrition by Training Times Last Year")
+
+employee %>% ggplot(aes(x = TrainingTimesLastYear,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Training Times Last Year and Attrition") +
+    xlab ("Training Times Last Year") +
+    ylab ("Monthly Income")
+
+
+###  Catigorical work life balance
+###  High is good for both genders
+
+employee %>% ggplot(aes(x = WorkLifeBalance,y=Attrition,col=Gender)) + geom_point(pos='Jitter') + ggtitle("Attrition by Work Life Balance")
+
+
+employee %>% ggplot(aes(x = WorkLifeBalance,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Work Life Balance and Attrition") +
+    xlab ("Work Life Balance") +
+    ylab ("Monthly Income")
+
+### Continuous: YearsAtCompany 
+### Light attrition after 20 years
+
+employee %>% ggplot(aes(x = YearsAtCompany,y=Attrition,col=Gender)) + geom_point(pos='Jitter') + ggtitle("Attrition by Years At Company") 
+
+employee %>% ggplot(aes(x = YearsAtCompany,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Years At Company and Attrition") +
+    xlab ("Years At Company") +
+    ylab ("Monthly Income")
+
+### Years in current role
+###  Not much movement in larger years
+employee %>% ggplot(aes(x = YearsInCurrentRole,y=Attrition,col=Gender)) + geom_point(pos='Jitter') + ggtitle("Attrition by Years In Current Role")
+
+
+
+employee %>% ggplot(aes(x = YearsInCurrentRole,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Years In Current Role and Attrition") +
+    xlab ("Years In Current Role") +
+    ylab ("Monthly Income")
+
+### YearsSinceLastPromotion
+employee %>% ggplot(aes(x = YearsSinceLastPromotion,y=Attrition,col=Gender)) + geom_point(pos='Jitter') + ggtitle("Attrition by Years Since Last Promotion") +
+xlab ("Years Since Last Promotion")
+
+employee %>% ggplot(aes(x = YearsSinceLastPromotion,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Years Since Last Promotion and Attrition") +
+    xlab ("Years Since Last Promotion") +
+    ylab ("Monthly Income")
+ 
+### YearsWithCurrManager
+employee %>% ggplot(aes(x = YearsWithCurrManager,y=Attrition,col=Gender)) + geom_point(pos='Jitter') + ggtitle("Attrition by Years With CurrManager") +
+xlab ("Years With Current Manager")
+
+employee %>% ggplot(aes(x = YearsWithCurrManager,y=MonthlyIncome,col=Attrition)) + geom_point(pos='Jitter') + ggtitle("Monthly Income by Years With Current Manager and Attrition") +
+    xlab ("Years With Current Manager") +
+    ylab ("Monthly Income")
+```
+### Create Test and Training Data Sets
+Data is Skewed for Attrition Reponse, so first split the data into two sets for Yes and No responses.  Then divide 80 percent to training and 20 percent test on the individual datasets.  Then put the two back together
+
+This will insure the YES responses are adequately represented.  If we do not do this, we risk having no YES responses in one of the created datasets
+
+```{r KNN Model Reduced Data}
+
+employee_reduced2 = employee[,c('Age','WorkLifeBalance','Education','StockOptionLevel','TotalWorkingYears','YearsAtCompany','YearsWithCurrManager','Attrition')]
+
+#split datasets yes/no
+AttritionYes = employee_reduced2 %>%  filter(Attrition == "Yes")
+AttritionNo = employee_reduced2 %>%  filter(Attrition == "No")
+
+# Balance the Dataset with taking the test/train split of 80%/ 20% on both Yes and No
+# Attrition so both values are in the test and training datasets
+
+set.seed(9)
+trainInd = sample(seq(1,dim(AttritionYes)[1],1),round(.7*dim(AttritionYes)[1]))
+trainYES = AttritionYes[trainInd,]
+testYES = AttritionYes[-trainInd,]
+
+trainInd = sample(seq(1,dim(AttritionNo)[1],1),round(.7*dim(AttritionNo)[1]))
+train = AttritionNo[trainInd,]
+test = AttritionNo[-trainInd,]
+
+train = rbind(train,trainYES)
+test = rbind(test,testYES)
+table(test$Attrition)
+
+cltest=knn(train[,c(1:7)],test[,c(1:7)],train$Attrition, prob = TRUE, k = 25)
+table(cltest,test$Attrition)
+CM = confusionMatrix(table(cltest,test$Attrition))
+CM
+
+```
+
+```{r KNN Model Reduced Scaled}
+
+employee_reducedz = data.frame(ZAge = scale(employee$Age), ZWorkLifeBalance = scale(employee$WorkLifeBalance), ZEducation=scale(employee$Education) ,ZStockOptionLevel=scale(employee$StockOptionLevel), ZTotalWorkingYears = scale(employee$TotalWorkingYears) , ZYearsAtCompany = scale(employee$YearsAtCompany) , ZYearsWithCurrManager=scale(employee$YearsWithCurrManager), Attrition = employee$Attrition)
+
+#split datasets yes/no
+AttritionYes = employee_reducedz %>%  filter(Attrition == "Yes")
+AttritionNo = employee_reducedz %>%  filter(Attrition == "No")
+
+# Balance the Dataset with taking the test/train split of 80%/ 20% on both Yes and No
+# Attrition so both values are in the test and training datasets
+
+set.seed(9)
+trainInd = sample(seq(1,dim(AttritionYes)[1],1),round(.7*dim(AttritionYes)[1]))
+trainYES = AttritionYes[trainInd,]
+testYES = AttritionYes[-trainInd,]
+
+trainInd = sample(seq(1,dim(AttritionNo)[1],1),round(.7*dim(AttritionNo)[1]))
+train = AttritionNo[trainInd,]
+test = AttritionNo[-trainInd,]
+
+train = rbind(train,trainYES)
+test = rbind(test,testYES)
+table(test$Attrition)
+
+cltest=knn(train[,c(1:7)],test[,c(1:7)],train$Attrition, prob = TRUE, k = 25)
+table(cltest,test$Attrition)
+CM = confusionMatrix(table(cltest,test$Attrition))
+CM
+```
+LASSO Feature Selection to use in Logistical Regression Attrition Model and basis for Linear Regression Income Model
+
+```{r LASSO Feature Selection}
+
+lasso.y <-employee[,c("Attrition")]
+ 
+lasso.x <- model.matrix(Attrition~ Age + BusinessTravel + DailyRate + Department + DistanceFromHome + Education + EducationField +EmployeeCount +	EmployeeNumber + EnvironmentSatisfaction + Gender + HourlyRate + JobInvolvement + JobLevel + JobRole + JobSatisfaction + MaritalStatus + MonthlyIncome + MonthlyRate + NumCompaniesWorked + OverTime + PerformanceRating + RelationshipSatisfaction + StandardHours  + StockOptionLevel + TotalWorkingYears + TrainingTimesLastYear +WorkLifeBalance + YearsAtCompany + YearsInCurrentRole + YearsSinceLastPromotion + YearsWithCurrManager
+,employee)
+
+
+###  LASSO Model for Feature Selection
+lasso.mdl.cvfit <- cv.glmnet(lasso.x, lasso.y, family = "binomial", type.measure = "class", nlambda = 1000)
+plot(lasso.mdl.cvfit)
+coef(lasso.mdl.cvfit)
+```
+
+ ### Create Test and Training Data Sets
+ ### Logistical Regression based on LASSO feature Selection
+ 
+Data is Skewed for Attrition Reponse, so first split the data into two sets for Yes and No responses.  Then divide 80 percent to training and 20 percent test on the individual datasets.  Then put the two back together
+
+This will insure the YES responses are adequately represented.  If we do not do this, we risk having no YES responses in one of the created datasets
+
+```{r Logistical Regression Model 1}
+ #Train and Test Split 80%/20%, with a seed of 10 so all members of the group can use to compare results on the same basis
+#The split wa done using the Yes and No Attrition Values Seperately to keep it balanced
+
+AttritionYes = employee %>%  filter(Attrition == "Yes")
+AttritionNo = employee %>%  filter(Attrition == "No")
+set.seed(9)
+trainInd = sample(dim(AttritionYes)[1],round(.8*dim(AttritionYes)[1]))
+trainYES = AttritionYes[trainInd,]
+testYES = AttritionYes[-trainInd,]
+
+trainInd = sample(dim(AttritionNo)[1],round(.8*dim(AttritionNo)[1]))
+train = AttritionNo[trainInd,]
+test = AttritionNo[-trainInd,]
+
+train = rbind(train,trainYES)
+test = rbind(test,testYES)
+table(test$Attritiontion)
+
+
+lr.employee <-glm(Attrition ~ Age + BusinessTravel + DistanceFromHome + EducationField + EnvironmentSatisfaction + HourlyRate + JobInvolvement + JobRole + JobSatisfaction  + MaritalStatus*Gender + MonthlyRate + NumCompaniesWorked + OverTime + RelationshipSatisfaction + StockOptionLevel + TotalWorkingYears + TrainingTimesLastYear  + WorkLifeBalance + YearsInCurrentRole + YearsSinceLastPromotion + YearsWithCurrManager,data=train,family=binomial(link="logit"))
+
+lr.employee.pred2 <- data.frame(predict(lr.employee, newdata  = test, type = "response"))
+lr.employee.pred2 = lr.employee.pred2 %>% mutate(pred = ifelse(lr.employee.pred2 <0.25, "No", "Yes"))
+
+table(lr.employee.pred2$pred)
+predtble = as.factor(lr.employee.pred2$pred)
+predtble  <-relevel(predtble, ref = "No") 
+Truth<-test$Attrition
+confmtx = as.matrix(table(predtble,Truth))
+CM = confusionMatrix(confmtx)
+CM
+```
+
+### Create Predcition Spreadsheet from Logistical Regression Model I
+
+```{r Logistical Regression Model 1 Predictions}
+lr.employee.predA <- data.frame(predict(lr.employee, newdata  = employeenoatt, type = "response"))
+lr.employee.predA = lr.employee.predA %>% mutate(pred = ifelse(lr.employee.predA <0.25, "No", "Yes"))
+
+preddfA = NewAttr=data.frame(lr.employee.predA[,c(2)])
+names(preddfA) <- c("PredictAttrition")
+AttrPred <- cbind(employeenoatt[1],preddfA)
+
+write.csv(AttrPred,'c:/School Stuff/DS/Doing DS/Project2/Case2PredictionsLull Attrition.csv')
+
+```
+Running a second LR Model on the same test/train datasets as above 
+This model was created by hand using only Data Analysis graphs
+
+```{r Second LR Model}
+lr.employee <-glm(Attrition~Age*TotalWorkingYears+ WorkLifeBalance  + NumCompaniesWorked + StockOptionLevel +JobLevel +JobInvolvement + MaritalStatus*Gender + YearsAtCompany + YearsWithCurrManager,data=train,family=binomial(link="logit"))
+
+lr.employee.pred2 <- data.frame(predict(lr.employee, newdata  = test, type = "response"))
+lr.employee.pred2 = lr.employee.pred2 %>% mutate(pred = ifelse(lr.employee.pred2 <0.25, "No", "Yes"))
+
+table(lr.employee.pred2$pred)
+predtble = as.factor(lr.employee.pred2$pred)
+predtble  <-relevel(predtble, ref = "No") 
+Truth<-test$Attrition
+confmtx = as.matrix(table(predtble,Truth))
+CM = confusionMatrix(confmtx)
+CM
+```
+### Test for Attrition Classification on Random Forest based on reduced dataset by EDA Plots
+
+```{r RF Model}
+#### Try Random Forest to see what model looks like
+employee_reducedrf = employee[,c('WorkLifeBalance','Education','StockOptionLevel','JobLevel','Department','OverTime','TotalWorkingYears','YearsAtCompany','YearsWithCurrManager','Attrition')]
+
+
+employee.rf <-randomForest(Attrition~.,data=employee_reducedrf,mtry=10,ntree=500,importance=T)
+summary(employee.rf)
+
+table(employee.rf$predicted,employee_reducedrf$Attrition)
+CM = confusionMatrix(table(employee.rf$predicted,employee_reducedrf$Attrition))
+CM
+```
+
+### Linear Regression Model for Income Prediction
+Run Linear Regression Model for Monthly Income Predictions   This model was based on the same LASSO Feature selection criteria used for Attrition.   However several interactions were added based on EDA to decrease the RMSE.    The Histogram of residuals showed skewed data, which is a violation of the Normality Assumption.  
+To correct for that normality violation, a log transformation was done on Monthly Income.  This smoothed out the residuals and gave a substatially lower RMSE.
+
+```{r Linear Regression Model }
+#split datasets yes/no
+AttritionYes = employee %>%  filter(Attrition == "Yes")
+AttritionNo = employee %>%  filter(Attrition == "No")
+
+#Redo Test/Train split - same as done before
+set.seed(9)
+trainInd = sample(dim(AttritionYes)[1],round(.8*dim(AttritionYes)[1]))
+trainYES = employee[trainInd,]
+testYES = employee[-trainInd,]
+
+trainInd = sample(dim(AttritionNo)[1],round(.8*dim(AttritionNo)[1]))
+train = AttritionNo[trainInd,]
+test = AttritionNo[-trainInd,]
+
+train = rbind(train,trainYES)
+test = rbind(test,testYES)
+table(test$Attribution)
+
+###  Added Interactions for Joblevel and Job Role, Business Travel and Gender, Total Working Years and Age, Years in current Role and  Current Manager
+
+lr.employee.inc <-lm(MonthlyIncome ~ JobLevel*JobRole + Department  +  BusinessTravel*Gender + DistanceFromHome + EducationField*Education + EnvironmentSatisfaction + HourlyRate*MonthlyRate   + JobInvolvement  + JobSatisfaction + MaritalStatus  + NumCompaniesWorked  + OverTime + RelationshipSatisfaction + StockOptionLevel  + TotalWorkingYears*Age + TrainingTimesLastYear  + WorkLifeBalance + YearsSinceLastPromotion + YearsInCurrentRole*YearsWithCurrManager,data=train)
+
+RMSE = sqrt(mean(lr.employee.inc$residuals^2))
+RMSE
+
+####  Histogram of Residuals
+
+ hist(lr.employee.inc$residuals, col = "blue", main = "Histogram of Residuals")
+
+####  Shows voiation of Normality so Log Monthly Income
+
+lr.employee.inc <-lm(log(MonthlyIncome) ~ JobLevel*JobRole + Department  +  BusinessTravel*Gender + DistanceFromHome + EducationField*Education + EnvironmentSatisfaction + HourlyRate*MonthlyRate   + JobInvolvement  + JobSatisfaction + MaritalStatus  + NumCompaniesWorked  + OverTime + RelationshipSatisfaction + StockOptionLevel  + TotalWorkingYears*Age + TrainingTimesLastYear  + WorkLifeBalance + YearsSinceLastPromotion + YearsInCurrentRole*YearsWithCurrManager,data=train)
+
+
+RMSE = sqrt(mean(lr.employee.inc$residuals^2))
+RMSE
+
+####  Histogram of Residuals
+
+ hist(lr.employee.inc$residuals, col = "blue", main = "Histogram of Residuals")
+
+summary(lr.employee.inc)
+plot(lr.employee.inc)
+```
+
+Show detailed plots of Interactions
+```{r Plot Interactions}
+#####  Plot the Interactions #####
+
+
+
+employee %>% ggplot(aes(x = JobLevel,y=JobRole,col=JobLevel)) + geom_point(pos='Jitter') + ggtitle("Job Level by Job Role ") +
+    xlab ("Job Level") +
+    ylab ("Job Role")
+
+
+employee %>% ggplot(aes(x = TotalWorkingYears,y=Age)) + geom_point(col='Blue',pos='Jitter') + ggtitle("Total Working Years by Age ") +
+    xlab ("Total Working Years") +
+    ylab ("Age")
+
+employee %>% ggplot(aes(x = Gender, fill=BusinessTravel)) + geom_bar(stat='count') +
+    xlab ("Gender") + ggtitle ("Gender and Business Travel")
+
+
+employee %>% ggplot(aes(x = Education, fill=EducationField)) + geom_bar(stat='count') +
+    xlab ("Gender") + ggtitle ("Gender and Business Travel")
+
+
+```
+
+Run the Linear Regression Employee Salary Predictions
+```{r Run Income Predictions}
+
+
+######  Linear Model Predictions
+lr.employee.predI <- data.frame(predict(lr.employee.inc, newdata  = test, type = "response"))
+newdf = NewIncome=data.frame(exp(lr.employee.predI))
+
+ 
+####  Run on competition dataset
+
+lr.employee.predI <- data.frame(predict(lr.employee.inc, newdata  = employeenoinc, type = "response"))
+preddf = NewIncome=data.frame(exp(lr.employee.predI))
+names(preddf) <- c("PredictIncome")
+IncomePred <- cbind(employeenoinc[1],preddf)
+
+write.csv(IncomePred,'c:/School Stuff/DS/Doing DS/Project2/Case2PredictionsLull Salary.csv')
+ 
+
+```
+Managers and Directors Rarely Leave but Job Satisfaction Rating is not Significant
+```{r Job Role and Level and Attrition}
+employee %>% ggplot(aes(x = JobRole,y=Attrition,col=JobLevel)) + geom_point(pos='Jitter') + ggtitle("Job Role, Job Level and Attrition") +
+    xlab ("Job Role") +
+    ylab ("Attrition") + theme(axis.text.x=element_text(angle=45, hjust=1))
+
+employee %>% ggplot(aes(x = JobRole,y=Attrition,col=JobSatisfaction)) + geom_point(pos='Jitter') + ggtitle("Job Role, Job Satisfaction and Attrition") +
+    xlab ("Job Role") +
+    ylab ("Attrition") + theme(axis.text.x=element_text(angle=45, hjust=1))
+```
+Run a T-Test to show that Job Satisfaction is < 3 for Manager, Manufacturing Director and Research Directors with Job Satisfaction > 3
+```{r T-Test for Job Satisfaction}
+ newemp <- employee %>% filter(JobLevel>3 & JobRole %in% c("Manager", "Manufacturing Director","Research Director"))
+
+t.test(newemp$JobSatisfaction, var.equal=F, mu=2,alternative='less') 
+```
+### Top 3 Categories   Of the varaibles picked in the best model, these changed the sensitivity and specificity the least
+```{r Top 3}
+AttritionYes = employee %>%  filter(Attrition == "Yes")
+AttritionNo = employee %>%  filter(Attrition == "No")
+
+###  Same test train split as before.  Picked top most influential Variables
+set.seed(9)
+trainInd = sample(seq(1,dim(AttritionYes)[1],1),round(.7*dim(AttritionYes)[1]))
+trainYES = AttritionYes[trainInd,]
+testYES = AttritionYes[-trainInd,]
+
+trainInd = sample(seq(1,dim(AttritionNo)[1],1),round(.7*dim(AttritionNo)[1]))
+train = AttritionNo[trainInd,]
+test = AttritionNo[-trainInd,]
+
+train = rbind(train,trainYES)
+test = rbind(test,testYES)
+ 
+
+ 
+lr.employee <-glm(Attrition~TotalWorkingYears + JobRole + WorkLifeBalance,data=train,family=binomial(link="logit"))
+
+lr.employee.pred2 <- data.frame(predict(lr.employee, newdata  = test, type = "response"))
+lr.employee.pred2 = lr.employee.pred2 %>% mutate(pred = ifelse(lr.employee.pred2 <0.25, "No", "Yes"))
+
+table(lr.employee.pred2$pred)
+predtble = as.factor(lr.employee.pred2$pred)
+predtble  <-relevel(predtble, ref = "No") 
+Truth<-test$Attrition
+confmtx = as.matrix(table(predtble,Truth))
+CM = confusionMatrix(confmtx)
+CM
+```
+Run a Naive Bayes on top 3 factors
+```{r Naive Bayes on top 3 factors}
+employee$WorkYrFactor = cut(employee$TotalWorkingYears, breaks = c(0,10,20,30,50), labels = c("< 10","10-20", "20-30","Above 30"))
+
+nbemploy <- data.frame(WorkLifeBalance = factor(employee$WorkLifeBalance),JobLevel = factor(employee$JobLevel),employee$WorkYrFactor,Attrition=employee$Attrition)
+
+model = naiveBayes(Attrition~.,data = nbemploy)
+tp=predict(model,nbemploy[,c('Attrition')])
+Truth=employee$Attrition
+confmtx = as.matrix(table(tp,Truth))
+CM = confusionMatrix(confmtx)
+CM
+```

@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Ellen Lull" />
+
+
+<title>CaseStudy2Lull</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Project Website for DS6306</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="Beer-Project.html">Beer Analysis</a>
+</li>
+<li>
+  <a href="CaseStudy2_EllenLull.html">Case Study2 Employee Data</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">CaseStudy2Lull</h1>
+<h4 class="author">Ellen Lull</h4>
+<h4 class="date">4/18/2020</h4>
+
+</div>
+
+
+<div id="msds-6306-case-study-2-analysis-of-employee-data-for-attrition-and-salary-predictions" class="section level1">
+<h1>MSDS 6306 Case Study 2: Analysis of Employee Data for Attrition and Salary Predictions</h1>
+<div id="ellen-lull-section-401" class="section level2">
+<h2>Ellen Lull Section 401</h2>
+<div id="read-files-and-set-up-libraries" class="section level3">
+<h3>Read Files and Set up Libraries</h3>
+<p>Executive Summary This is a DDS Analytics project to predict Attrition and Monthly Income based on data 870 Employee Data Records. This data is to be used to create a model for classifying attrition by significant variables. Next it creates a prediction model for Attrition based on existing variables. It will identify the top three turnover predictors. Then we will create a model to predict monthly income for each of the employees. Predictions on test datasets are output to CSV files for both Attrition and Monthly Income. Finally, we will be looking at three Job roles with high level jobs that have low attrition levels and their employee job satisfaction ratings. This project consists of analysis to cover all of these areas and a video presentation</p>
+<pre class="r"><code>library(tidyverse)
+library(ggplot2)
+library(stringr)
+library(dplyr)
+library(caret)
+library(class)
+library(randomForest)</code></pre>
+<pre><code>## Warning: package &#39;randomForest&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## randomForest 4.6-14</code></pre>
+<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;randomForest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     combine</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     margin</code></pre>
+<pre class="r"><code>library(glmnet)</code></pre>
+<pre><code>## Warning: package &#39;glmnet&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:tidyr&#39;:
+## 
+##     expand, pack, unpack</code></pre>
+<pre><code>## Loaded glmnet 3.0-2</code></pre>
+<pre class="r"><code>library(e1071)</code></pre>
+<pre><code>## Warning: package &#39;e1071&#39; was built under R version 3.6.2</code></pre>
+<pre class="r"><code>employee &lt;- read.delim(&quot;C:/School Stuff/DS/Doing DS/Project2/CaseStudy2-data.csv&quot;,header=TRUE,sep=&quot;,&quot;)
+
+employeenoinc &lt;- read.delim(&quot;C:/School Stuff/DS/Doing DS/Project2/CaseStudy2CompSet No Salary.csv&quot;,header=TRUE,sep=&quot;,&quot;)
+
+employeenoatt&lt;- read.delim(&quot;C:/School Stuff/DS/Doing DS/Project2/CaseStudy2CompSet No Attrition.csv&quot;,header=TRUE,sep=&quot;,&quot;) </code></pre>
+</div>
+<div id="eda-run-pairs-plot-for-continuous-variables" class="section level3">
+<h3>EDA: Run Pairs Plot for Continuous Variables</h3>
+<pre class="r"><code>employee_reduced = employee[,c(&#39;Age&#39;,&#39;DailyRate&#39;,&#39;DistanceFromHome&#39;,&#39;Attrition&#39;,&#39;MonthlyRate&#39;,&#39;PercentSalaryHike&#39;,&#39;YearsInCurrentRole&#39;,&#39;YearsSinceLastPromotion&#39;,&#39;YearsWithCurrManager&#39;)]
+
+pairs(employee_reduced,col=employee$Attrition,main=&#39;Employee Data (Continuous variables only) Colored by Attrition&#39;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Pairs%20Plot-1.png" width="672" /></p>
+<p>Plot Every Variable as Related to Attrition and Monthly Income ### EDA: Plot Relationships related to Attrition and Monthly Income for all 36 Variables</p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = Age,fill=Attrition)) + geom_histogram(binwidth=2) + ggtitle(&quot;Attrition Count by Age&quot;) +
+xlab (&quot;Age&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-1.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = Age,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income and Attrition by Age&quot;) +
+    xlab (&quot;Age&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-2.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = BusinessTravel,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income and attrition by Travel&quot;) +
+    xlab (&quot;Business Travel&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-3.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = BusinessTravel,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Travel&quot;) +
+xlab (&quot;Business Travel&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-4.png" width="672" /></p>
+<pre class="r"><code>###  Continous: DailyRate
+employee %&gt;% ggplot(aes(x = DailyRate,fill=Attrition)) + geom_histogram(binwidth=20) + ggtitle(&quot;Attrition Count by Daily Rate&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-5.png" width="672" /></p>
+<pre class="r"><code>###  Continous: DailyRate
+ 
+employee %&gt;% ggplot(aes(x = DailyRate,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Daily Rate&quot;) +
+xlab (&quot;Daily Rate&quot;) +
+ylab (&quot;Monthly Income&quot;) </code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-6.png" width="672" /></p>
+<pre class="r"><code>### Categorical: Department
+employee %&gt;% ggplot(aes(x = Department,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Department&quot;) +
+xlab (&quot;Department&quot;) +
+ylab (&quot;Attrition&quot;) </code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-7.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = Department,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Department and Attrition&quot;) +
+xlab (&quot;Department&quot;) +
+ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-8.png" width="672" /></p>
+<pre class="r"><code>### Continuous: DistanceFromHome
+employee %&gt;% ggplot(aes(x = DistanceFromHome,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Distance From Home&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-9.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = DistanceFromHome,fill=Attrition)) + geom_histogram(binwidth=4) + ggtitle(&quot;Attrition Count by Distance From Home&quot;) +
+xlab (&quot;Distance From Home&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-10.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = DistanceFromHome,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Distance From Home and Attrition&quot;) +
+xlab (&quot;Distance From Home&quot;) +
+ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-11.png" width="672" /></p>
+<pre class="r"><code>### Categorical: Education
+### Look at further to see &lt; 4 years versus 4/5 years
+employee %&gt;% ggplot(aes(x = Education,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Education&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-12.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = Education,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Education and Attrition&quot;) +
+xlab (&quot;Education&quot;) +
+ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-13.png" width="672" /></p>
+<pre class="r"><code>### Employee Count is always 1
+
+### Continuous: EmployeeNumber 
+
+employee %&gt;% ggplot(aes(x = EmployeeNumber,fill=Attrition)) + geom_histogram(binwidth=20) + ggtitle(&quot;Attrition Count by Employee Number&quot;) +
+xlab (&quot;Employee Number&quot;) </code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-14.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = EmployeeNumber,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Employee Number and Attrition&quot;) +
+xlab (&quot;Employee Number&quot;) +
+ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-15.png" width="672" /></p>
+<pre class="r"><code>### Categorical: EnvironmentSatisfaction
+employee %&gt;% ggplot(aes(x = EnvironmentSatisfaction,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Environment Satisfaction&quot;) +
+xlab (&quot;Environment Satisfaction&quot;) </code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-16.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = EnvironmentSatisfaction,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Environment Satisfaction and Attrition&quot;) +
+xlab (&quot;Environment Satisfaction&quot;) +
+ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-17.png" width="672" /></p>
+<pre class="r"><code>### Categorical: Gender    
+### Males have a higher rate
+
+employee %&gt;% ggplot(aes(x = Gender,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Gender&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-18.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = Gender,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Gender and Attrition&quot;) +
+xlab (&quot;Gender&quot;) +
+ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-19.png" width="672" /></p>
+<pre class="r"><code>### Continuous: HourlyRate
+
+employee %&gt;% ggplot(aes(x = HourlyRate,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Hourly Rate&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-20.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = HourlyRate,fill=Attrition)) + geom_histogram(binwidth=4) + ggtitle(&quot;Attrition Count by Hourly Rate&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-21.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = Gender,HourlyRate,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Hourly Rage and Attrition&quot;) +
+xlab (&quot;Hourly Rate&quot;) +
+ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-22.png" width="672" /></p>
+<pre class="r"><code>###  Likely a billing rate 
+
+employee %&gt;% ggplot(aes(x = HourlyRate,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Hourly Rate and Attrition&quot;) +
+    xlab (&quot;Hourly Rate&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-23.png" width="672" /></p>
+<pre class="r"><code>### Categorical JobInvolvement
+### Look at high job involvement
+
+employee %&gt;% ggplot(aes(x = JobInvolvement,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Job Involvement&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-24.png" width="672" /></p>
+<pre class="r"><code>### Categorical JobLevel
+### Look at High Job Levels
+
+employee %&gt;% ggplot(aes(x = JobLevel,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Job Level&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-25.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = JobLevel,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Job Level and Attrition&quot;) +
+    xlab (&quot;Job Level&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-26.png" width="672" /></p>
+<pre class="r"><code>### Categorical  JobRole
+###  Look at Manager Manufacturing Director and Research Director
+
+employee %&gt;% ggplot(aes(x = JobRole,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Job Role&quot;) +
+  theme(axis.text.x=element_text(angle=90, hjust=1))</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-27.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = JobRole,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Job Role and Attrition&quot;) +
+    xlab (&quot;Job Role&quot;) +
+    ylab (&quot;Monthly Income&quot;)  </code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-28.png" width="672" /></p>
+<pre class="r"><code>### Categorical JobSatisfaction
+
+employee %&gt;% ggplot(aes(x = JobSatisfaction,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Job Satisfaction&quot;) +
+xlab (&quot;Job Satisfaction&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-29.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = JobSatisfaction,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Job Satisfaction and Attrition&quot;) +
+    xlab (&quot;Job Satisfaction&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-30.png" width="672" /></p>
+<pre class="r"><code>### Categorical: MaritalStatus
+###  Look at Divorced Women.  Divorced Men lower too
+
+employee %&gt;% ggplot(aes(x = MaritalStatus,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Marital Status&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-31.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = MaritalStatus,y=Attrition,col=Gender)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Marital Status and Gender&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-32.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = MaritalStatus,y=MonthlyIncome,col=Gender)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Marital Status and Gender&quot;) +
+    xlab (&quot;Marital Status&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-33.png" width="672" /></p>
+<pre class="r"><code>###  Continous: MonthlyIncome
+employee %&gt;% ggplot(aes(x = MonthlyIncome,fill=Attrition)) + geom_histogram(binwidth=100) + ggtitle(&quot;Attrition Count by Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-34.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = Attrition,y=MonthlyIncome,col=Gender)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Monthly Income and Gender&quot;) +
+    xlab (&quot;Attrition&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-35.png" width="672" /></p>
+<pre class="r"><code>### Continuous:  MonthlyRate    
+employee %&gt;% ggplot(aes(x = MonthlyRate,fill=Attrition)) + geom_histogram(binwidth=200) + ggtitle(&quot;Attrition Count by Monthly Rate&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-36.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = MonthlyRate,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Monthly Rate and Attrition&quot;) +
+    xlab (&quot;Monthly Rate&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-37.png" width="672" /></p>
+<pre class="r"><code>###  Catigorical (numeric but only 9): NumCompaniesWorked   
+employee %&gt;% ggplot(aes(x = NumCompaniesWorked,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Number of Companies Worked&quot;) +
+ xlab (&quot;Number of companies worked&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-38.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = NumCompaniesWorked,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Number of Companies Worked and Attrition&quot;) +
+    xlab (&quot;Number of Companies Employee has Worked at&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-39.png" width="672" /></p>
+<pre class="r"><code>###  Catigorical Over18 
+##  All over 18
+
+employee %&gt;% ggplot(aes(x = Over18,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Age over 18&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-40.png" width="672" /></p>
+<pre class="r"><code>###  Catigorical OverTime   
+ 
+employee %&gt;% ggplot(aes(x = OverTime,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by overtime&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-41.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = OverTime,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Overtime and Attrition&quot;) +
+    xlab (&quot;Overtime&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-42.png" width="672" /></p>
+<pre class="r"><code>### Continuous:  PercentSalaryHike
+###  Look at salary hike with interaction of Permformance Rating
+    
+employee %&gt;% ggplot(aes(x = PercentSalaryHike,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Percent Salary Hike&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-43.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = PercentSalaryHike,y=Attrition,col=PerformanceRating)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Percent Salary Hike&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-44.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = PercentSalaryHike,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Percent Salary Hike and Attrition&quot;) +
+    xlab (&quot;Percent Salary Increase&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-45.png" width="672" /></p>
+<pre class="r"><code>###  Catigorical RelationshipSatisfaction   
+ 
+employee %&gt;% ggplot(aes(x = RelationshipSatisfaction,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Relationship Satisfaction&quot;) +
+ xlab(&quot;Relationship Satisfaction&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-46.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = RelationshipSatisfaction,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Relationship Satisfaction and Attrition&quot;) +
+    xlab (&quot;Relationship Satisfaction&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-47.png" width="672" /></p>
+<pre class="r"><code>###  Catigorical StandardHours  
+ 
+employee %&gt;% ggplot(aes(x = StandardHours,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Standard Hours&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-48.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = StandardHours,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Standard Hours and Attrition&quot;) +
+    xlab (&quot;Standard Hours&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-49.png" width="672" /></p>
+<pre class="r"><code>###  Catigorical StandardHours  
+### Stock Option Level 2
+ 
+employee %&gt;% ggplot(aes(x = StockOptionLevel,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Stock Option Level&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-50.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = StockOptionLevel,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Stock Option Level and Attrition&quot;) +
+    xlab (&quot;Stock Option Level&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-51.png" width="672" /></p>
+<pre class="r"><code>### Continuous:  TotalWorkingYears
+### Obviously strong correlation with Age
+    
+employee %&gt;% ggplot(aes(x = TotalWorkingYears,y=Attrition,col=Age)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Total Working Years&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-52.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = TotalWorkingYears,y=MonthlyIncome,col=Gender)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Total Working Years and Gender&quot;) +
+    xlab (&quot;Total Working Years&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-53.png" width="672" /></p>
+<pre class="r"><code>### TrainingTimesLastYear; values 1-6
+
+employee %&gt;% ggplot(aes(x = TrainingTimesLastYear,y=Attrition,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Training Times Last Year&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-54.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = TrainingTimesLastYear,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Training Times Last Year and Attrition&quot;) +
+    xlab (&quot;Training Times Last Year&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-55.png" width="672" /></p>
+<pre class="r"><code>###  Catigorical work life balance
+###  High is good for both genders
+
+employee %&gt;% ggplot(aes(x = WorkLifeBalance,y=Attrition,col=Gender)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Work Life Balance&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-56.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = WorkLifeBalance,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Work Life Balance and Attrition&quot;) +
+    xlab (&quot;Work Life Balance&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-57.png" width="672" /></p>
+<pre class="r"><code>### Continuous: YearsAtCompany 
+### Light attrition after 20 years
+
+employee %&gt;% ggplot(aes(x = YearsAtCompany,y=Attrition,col=Gender)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Years At Company&quot;) </code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-58.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = YearsAtCompany,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Years At Company and Attrition&quot;) +
+    xlab (&quot;Years At Company&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-59.png" width="672" /></p>
+<pre class="r"><code>### Years in current role
+###  Not much movement in larger years
+employee %&gt;% ggplot(aes(x = YearsInCurrentRole,y=Attrition,col=Gender)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Years In Current Role&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-60.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = YearsInCurrentRole,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Years In Current Role and Attrition&quot;) +
+    xlab (&quot;Years In Current Role&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-61.png" width="672" /></p>
+<pre class="r"><code>### YearsSinceLastPromotion
+employee %&gt;% ggplot(aes(x = YearsSinceLastPromotion,y=Attrition,col=Gender)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Years Since Last Promotion&quot;) +
+xlab (&quot;Years Since Last Promotion&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-62.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = YearsSinceLastPromotion,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Years Since Last Promotion and Attrition&quot;) +
+    xlab (&quot;Years Since Last Promotion&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-63.png" width="672" /></p>
+<pre class="r"><code>### YearsWithCurrManager
+employee %&gt;% ggplot(aes(x = YearsWithCurrManager,y=Attrition,col=Gender)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Attrition by Years With CurrManager&quot;) +
+xlab (&quot;Years With Current Manager&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-64.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = YearsWithCurrManager,y=MonthlyIncome,col=Attrition)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Monthly Income by Years With Current Manager and Attrition&quot;) +
+    xlab (&quot;Years With Current Manager&quot;) +
+    ylab (&quot;Monthly Income&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Everything!-65.png" width="672" /> ### Create Test and Training Data Sets Data is Skewed for Attrition Reponse, so first split the data into two sets for Yes and No responses. Then divide 80 percent to training and 20 percent test on the individual datasets. Then put the two back together</p>
+<p>This will insure the YES responses are adequately represented. If we do not do this, we risk having no YES responses in one of the created datasets</p>
+<pre class="r"><code>employee_reduced2 = employee[,c(&#39;Age&#39;,&#39;WorkLifeBalance&#39;,&#39;Education&#39;,&#39;StockOptionLevel&#39;,&#39;TotalWorkingYears&#39;,&#39;YearsAtCompany&#39;,&#39;YearsWithCurrManager&#39;,&#39;Attrition&#39;)]
+
+#split datasets yes/no
+AttritionYes = employee_reduced2 %&gt;%  filter(Attrition == &quot;Yes&quot;)
+AttritionNo = employee_reduced2 %&gt;%  filter(Attrition == &quot;No&quot;)
+
+# Balance the Dataset with taking the test/train split of 80%/ 20% on both Yes and No
+# Attrition so both values are in the test and training datasets
+
+set.seed(9)
+trainInd = sample(seq(1,dim(AttritionYes)[1],1),round(.7*dim(AttritionYes)[1]))
+trainYES = AttritionYes[trainInd,]
+testYES = AttritionYes[-trainInd,]
+
+trainInd = sample(seq(1,dim(AttritionNo)[1],1),round(.7*dim(AttritionNo)[1]))
+train = AttritionNo[trainInd,]
+test = AttritionNo[-trainInd,]
+
+train = rbind(train,trainYES)
+test = rbind(test,testYES)
+table(test$Attrition)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 219  42</code></pre>
+<pre class="r"><code>cltest=knn(train[,c(1:7)],test[,c(1:7)],train$Attrition, prob = TRUE, k = 25)
+table(cltest,test$Attrition)</code></pre>
+<pre><code>##       
+## cltest  No Yes
+##    No  217  40
+##    Yes   2   2</code></pre>
+<pre class="r"><code>CM = confusionMatrix(table(cltest,test$Attrition))
+CM</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##       
+## cltest  No Yes
+##    No  217  40
+##    Yes   2   2
+##                                           
+##                Accuracy : 0.8391          
+##                  95% CI : (0.7888, 0.8815)
+##     No Information Rate : 0.8391          
+##     P-Value [Acc &gt; NIR] : 0.5411          
+##                                           
+##                   Kappa : 0.0607          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 1.135e-08       
+##                                           
+##             Sensitivity : 0.99087         
+##             Specificity : 0.04762         
+##          Pos Pred Value : 0.84436         
+##          Neg Pred Value : 0.50000         
+##              Prevalence : 0.83908         
+##          Detection Rate : 0.83142         
+##    Detection Prevalence : 0.98467         
+##       Balanced Accuracy : 0.51924         
+##                                           
+##        &#39;Positive&#39; Class : No              
+## </code></pre>
+<pre class="r"><code>employee_reducedz = data.frame(ZAge = scale(employee$Age), ZWorkLifeBalance = scale(employee$WorkLifeBalance), ZEducation=scale(employee$Education) ,ZStockOptionLevel=scale(employee$StockOptionLevel), ZTotalWorkingYears = scale(employee$TotalWorkingYears) , ZYearsAtCompany = scale(employee$YearsAtCompany) , ZYearsWithCurrManager=scale(employee$YearsWithCurrManager), Attrition = employee$Attrition)
+
+#split datasets yes/no
+AttritionYes = employee_reducedz %&gt;%  filter(Attrition == &quot;Yes&quot;)
+AttritionNo = employee_reducedz %&gt;%  filter(Attrition == &quot;No&quot;)
+
+# Balance the Dataset with taking the test/train split of 80%/ 20% on both Yes and No
+# Attrition so both values are in the test and training datasets
+
+set.seed(9)
+trainInd = sample(seq(1,dim(AttritionYes)[1],1),round(.7*dim(AttritionYes)[1]))
+trainYES = AttritionYes[trainInd,]
+testYES = AttritionYes[-trainInd,]
+
+trainInd = sample(seq(1,dim(AttritionNo)[1],1),round(.7*dim(AttritionNo)[1]))
+train = AttritionNo[trainInd,]
+test = AttritionNo[-trainInd,]
+
+train = rbind(train,trainYES)
+test = rbind(test,testYES)
+table(test$Attrition)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 219  42</code></pre>
+<pre class="r"><code>cltest=knn(train[,c(1:7)],test[,c(1:7)],train$Attrition, prob = TRUE, k = 25)
+table(cltest,test$Attrition)</code></pre>
+<pre><code>##       
+## cltest  No Yes
+##    No  219  40
+##    Yes   0   2</code></pre>
+<pre class="r"><code>CM = confusionMatrix(table(cltest,test$Attrition))
+CM</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##       
+## cltest  No Yes
+##    No  219  40
+##    Yes   0   2
+##                                           
+##                Accuracy : 0.8467          
+##                  95% CI : (0.7972, 0.8882)
+##     No Information Rate : 0.8391          
+##     P-Value [Acc &gt; NIR] : 0.4072          
+##                                           
+##                   Kappa : 0.0774          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 6.984e-10       
+##                                           
+##             Sensitivity : 1.00000         
+##             Specificity : 0.04762         
+##          Pos Pred Value : 0.84556         
+##          Neg Pred Value : 1.00000         
+##              Prevalence : 0.83908         
+##          Detection Rate : 0.83908         
+##    Detection Prevalence : 0.99234         
+##       Balanced Accuracy : 0.52381         
+##                                           
+##        &#39;Positive&#39; Class : No              
+## </code></pre>
+<p>LASSO Feature Selection to use in Logistical Regression Attrition Model and basis for Linear Regression Income Model</p>
+<pre class="r"><code>lasso.y &lt;-employee[,c(&quot;Attrition&quot;)]
+ 
+lasso.x &lt;- model.matrix(Attrition~ Age + BusinessTravel + DailyRate + Department + DistanceFromHome + Education + EducationField +EmployeeCount +   EmployeeNumber + EnvironmentSatisfaction + Gender + HourlyRate + JobInvolvement + JobLevel + JobRole + JobSatisfaction + MaritalStatus + MonthlyIncome + MonthlyRate + NumCompaniesWorked + OverTime + PerformanceRating + RelationshipSatisfaction + StandardHours  + StockOptionLevel + TotalWorkingYears + TrainingTimesLastYear +WorkLifeBalance + YearsAtCompany + YearsInCurrentRole + YearsSinceLastPromotion + YearsWithCurrManager
+,employee)
+
+
+###  LASSO Model for Feature Selection
+lasso.mdl.cvfit &lt;- cv.glmnet(lasso.x, lasso.y, family = &quot;binomial&quot;, type.measure = &quot;class&quot;, nlambda = 1000)
+plot(lasso.mdl.cvfit)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/LASSO%20Feature%20Selection-1.png" width="672" /></p>
+<pre class="r"><code>coef(lasso.mdl.cvfit)</code></pre>
+<pre><code>## 48 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
+##                                              1
+## (Intercept)                       2.431166e+00
+## (Intercept)                       .           
+## Age                              -2.140829e-02
+## BusinessTravelTravel_Frequently   4.287978e-01
+## BusinessTravelTravel_Rarely       .           
+## DailyRate                        -5.934412e-05
+## DepartmentResearch &amp; Development -1.754303e-01
+## DepartmentSales                   .           
+## DistanceFromHome                  2.711976e-02
+## Education                         .           
+## EducationFieldLife Sciences       .           
+## EducationFieldMarketing           .           
+## EducationFieldMedical             .           
+## EducationFieldOther               .           
+## EducationFieldTechnical Degree    2.160689e-01
+## EmployeeCount                     .           
+## EmployeeNumber                    .           
+## EnvironmentSatisfaction          -1.773350e-01
+## GenderMale                        1.715702e-02
+## HourlyRate                        3.889946e-03
+## JobInvolvement                   -6.150345e-01
+## JobLevel                          .           
+## JobRoleHuman Resources            2.857016e-01
+## JobRoleLaboratory Technician      2.682875e-01
+## JobRoleManager                    .           
+## JobRoleManufacturing Director    -1.052099e+00
+## JobRoleResearch Director         -6.450810e-01
+## JobRoleResearch Scientist         .           
+## JobRoleSales Executive            .           
+## JobRoleSales Representative       1.019709e+00
+## JobSatisfaction                  -3.112936e-01
+## MaritalStatusMarried              1.749374e-01
+## MaritalStatusSingle               7.594999e-01
+## MonthlyIncome                     .           
+## MonthlyRate                      -3.337732e-06
+## NumCompaniesWorked                1.266096e-01
+## OverTimeYes                       1.502123e+00
+## PerformanceRating                 .           
+## RelationshipSatisfaction         -1.175047e-01
+## StandardHours                     .           
+## StockOptionLevel                 -1.376822e-01
+## TotalWorkingYears                -4.208574e-02
+## TrainingTimesLastYear            -1.453440e-01
+## WorkLifeBalance                  -3.195260e-01
+## YearsAtCompany                    .           
+## YearsInCurrentRole               -4.711800e-02
+## YearsSinceLastPromotion           1.241853e-01
+## YearsWithCurrManager             -5.379575e-02</code></pre>
+<p>### Create Test and Training Data Sets ### Logistical Regression based on LASSO feature Selection</p>
+<p>Data is Skewed for Attrition Reponse, so first split the data into two sets for Yes and No responses. Then divide 80 percent to training and 20 percent test on the individual datasets. Then put the two back together</p>
+<p>This will insure the YES responses are adequately represented. If we do not do this, we risk having no YES responses in one of the created datasets</p>
+<pre class="r"><code> #Train and Test Split 80%/20%, with a seed of 10 so all members of the group can use to compare results on the same basis
+#The split wa done using the Yes and No Attrition Values Seperately to keep it balanced
+
+AttritionYes = employee %&gt;%  filter(Attrition == &quot;Yes&quot;)
+AttritionNo = employee %&gt;%  filter(Attrition == &quot;No&quot;)
+set.seed(9)
+trainInd = sample(dim(AttritionYes)[1],round(.8*dim(AttritionYes)[1]))
+trainYES = AttritionYes[trainInd,]
+testYES = AttritionYes[-trainInd,]
+
+trainInd = sample(dim(AttritionNo)[1],round(.8*dim(AttritionNo)[1]))
+train = AttritionNo[trainInd,]
+test = AttritionNo[-trainInd,]
+
+train = rbind(train,trainYES)
+test = rbind(test,testYES)
+table(test$Attritiontion)</code></pre>
+<pre><code>## &lt; table of extent 0 &gt;</code></pre>
+<pre class="r"><code>lr.employee &lt;-glm(Attrition ~ Age + BusinessTravel + DistanceFromHome + EducationField + EnvironmentSatisfaction + HourlyRate + JobInvolvement + JobRole + JobSatisfaction  + MaritalStatus*Gender + MonthlyRate + NumCompaniesWorked + OverTime + RelationshipSatisfaction + StockOptionLevel + TotalWorkingYears + TrainingTimesLastYear  + WorkLifeBalance + YearsInCurrentRole + YearsSinceLastPromotion + YearsWithCurrManager,data=train,family=binomial(link=&quot;logit&quot;))
+
+lr.employee.pred2 &lt;- data.frame(predict(lr.employee, newdata  = test, type = &quot;response&quot;))
+lr.employee.pred2 = lr.employee.pred2 %&gt;% mutate(pred = ifelse(lr.employee.pred2 &lt;0.25, &quot;No&quot;, &quot;Yes&quot;))
+
+table(lr.employee.pred2$pred)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 130  44</code></pre>
+<pre class="r"><code>predtble = as.factor(lr.employee.pred2$pred)
+predtble  &lt;-relevel(predtble, ref = &quot;No&quot;) 
+Truth&lt;-test$Attrition
+confmtx = as.matrix(table(predtble,Truth))
+CM = confusionMatrix(confmtx)
+CM</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##         Truth
+## predtble  No Yes
+##      No  123   7
+##      Yes  23  21
+##                                           
+##                Accuracy : 0.8276          
+##                  95% CI : (0.7631, 0.8805)
+##     No Information Rate : 0.8391          
+##     P-Value [Acc &gt; NIR] : 0.70289         
+##                                           
+##                   Kappa : 0.4813          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 0.00617         
+##                                           
+##             Sensitivity : 0.8425          
+##             Specificity : 0.7500          
+##          Pos Pred Value : 0.9462          
+##          Neg Pred Value : 0.4773          
+##              Prevalence : 0.8391          
+##          Detection Rate : 0.7069          
+##    Detection Prevalence : 0.7471          
+##       Balanced Accuracy : 0.7962          
+##                                           
+##        &#39;Positive&#39; Class : No              
+## </code></pre>
+</div>
+<div id="create-predcition-spreadsheet-from-logistical-regression-model-i" class="section level3">
+<h3>Create Predcition Spreadsheet from Logistical Regression Model I</h3>
+<pre class="r"><code>lr.employee.predA &lt;- data.frame(predict(lr.employee, newdata  = employeenoatt, type = &quot;response&quot;))
+lr.employee.predA = lr.employee.predA %&gt;% mutate(pred = ifelse(lr.employee.predA &lt;0.25, &quot;No&quot;, &quot;Yes&quot;))
+
+preddfA = NewAttr=data.frame(lr.employee.predA[,c(2)])
+names(preddfA) &lt;- c(&quot;PredictAttrition&quot;)
+AttrPred &lt;- cbind(employeenoatt[1],preddfA)
+
+write.csv(AttrPred,&#39;c:/School Stuff/DS/Doing DS/Project2/Case2PredictionsLull Attrition.csv&#39;)</code></pre>
+<p>Running a second LR Model on the same test/train datasets as above This model was created by hand using only Data Analysis graphs</p>
+<pre class="r"><code>lr.employee &lt;-glm(Attrition~Age*TotalWorkingYears+ WorkLifeBalance  + NumCompaniesWorked + StockOptionLevel +JobLevel +JobInvolvement + MaritalStatus*Gender + YearsAtCompany + YearsWithCurrManager,data=train,family=binomial(link=&quot;logit&quot;))
+
+lr.employee.pred2 &lt;- data.frame(predict(lr.employee, newdata  = test, type = &quot;response&quot;))
+lr.employee.pred2 = lr.employee.pred2 %&gt;% mutate(pred = ifelse(lr.employee.pred2 &lt;0.25, &quot;No&quot;, &quot;Yes&quot;))
+
+table(lr.employee.pred2$pred)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 122  52</code></pre>
+<pre class="r"><code>predtble = as.factor(lr.employee.pred2$pred)
+predtble  &lt;-relevel(predtble, ref = &quot;No&quot;) 
+Truth&lt;-test$Attrition
+confmtx = as.matrix(table(predtble,Truth))
+CM = confusionMatrix(confmtx)
+CM</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##         Truth
+## predtble  No Yes
+##      No  110  12
+##      Yes  36  16
+##                                           
+##                Accuracy : 0.7241          
+##                  95% CI : (0.6514, 0.7891)
+##     No Information Rate : 0.8391          
+##     P-Value [Acc &gt; NIR] : 0.9999580       
+##                                           
+##                   Kappa : 0.2413          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 0.0009009       
+##                                           
+##             Sensitivity : 0.7534          
+##             Specificity : 0.5714          
+##          Pos Pred Value : 0.9016          
+##          Neg Pred Value : 0.3077          
+##              Prevalence : 0.8391          
+##          Detection Rate : 0.6322          
+##    Detection Prevalence : 0.7011          
+##       Balanced Accuracy : 0.6624          
+##                                           
+##        &#39;Positive&#39; Class : No              
+## </code></pre>
+</div>
+<div id="test-for-attrition-classification-on-random-forest-based-on-reduced-dataset-by-eda-plots" class="section level3">
+<h3>Test for Attrition Classification on Random Forest based on reduced dataset by EDA Plots</h3>
+<pre class="r"><code>#### Try Random Forest to see what model looks like
+employee_reducedrf = employee[,c(&#39;WorkLifeBalance&#39;,&#39;Education&#39;,&#39;StockOptionLevel&#39;,&#39;JobLevel&#39;,&#39;Department&#39;,&#39;OverTime&#39;,&#39;TotalWorkingYears&#39;,&#39;YearsAtCompany&#39;,&#39;YearsWithCurrManager&#39;,&#39;Attrition&#39;)]
+
+
+employee.rf &lt;-randomForest(Attrition~.,data=employee_reducedrf,mtry=10,ntree=500,importance=T)</code></pre>
+<pre><code>## Warning in randomForest.default(m, y, ...): invalid mtry: reset to within valid range</code></pre>
+<pre class="r"><code>summary(employee.rf)</code></pre>
+<pre><code>##                 Length Class  Mode     
+## call               6   -none- call     
+## type               1   -none- character
+## predicted        870   factor numeric  
+## err.rate        1500   -none- numeric  
+## confusion          6   -none- numeric  
+## votes           1740   matrix numeric  
+## oob.times        870   -none- numeric  
+## classes            2   -none- character
+## importance        36   -none- numeric  
+## importanceSD      27   -none- numeric  
+## localImportance    0   -none- NULL     
+## proximity          0   -none- NULL     
+## ntree              1   -none- numeric  
+## mtry               1   -none- numeric  
+## forest            14   -none- list     
+## y                870   factor numeric  
+## test               0   -none- NULL     
+## inbag              0   -none- NULL     
+## terms              3   terms  call</code></pre>
+<pre class="r"><code>table(employee.rf$predicted,employee_reducedrf$Attrition)</code></pre>
+<pre><code>##      
+##        No Yes
+##   No  680  92
+##   Yes  50  48</code></pre>
+<pre class="r"><code>CM = confusionMatrix(table(employee.rf$predicted,employee_reducedrf$Attrition))
+CM</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##      
+##        No Yes
+##   No  680  92
+##   Yes  50  48
+##                                           
+##                Accuracy : 0.8368          
+##                  95% CI : (0.8105, 0.8607)
+##     No Information Rate : 0.8391          
+##     P-Value [Acc &gt; NIR] : 0.5950295       
+##                                           
+##                   Kappa : 0.3122          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 0.0005803       
+##                                           
+##             Sensitivity : 0.9315          
+##             Specificity : 0.3429          
+##          Pos Pred Value : 0.8808          
+##          Neg Pred Value : 0.4898          
+##              Prevalence : 0.8391          
+##          Detection Rate : 0.7816          
+##    Detection Prevalence : 0.8874          
+##       Balanced Accuracy : 0.6372          
+##                                           
+##        &#39;Positive&#39; Class : No              
+## </code></pre>
+</div>
+<div id="linear-regression-model-for-income-prediction" class="section level3">
+<h3>Linear Regression Model for Income Prediction</h3>
+<p>Run Linear Regression Model for Monthly Income Predictions This model was based on the same LASSO Feature selection criteria used for Attrition. However several interactions were added based on EDA to decrease the RMSE. The Histogram of residuals showed skewed data, which is a violation of the Normality Assumption.<br />
+To correct for that normality violation, a log transformation was done on Monthly Income. This smoothed out the residuals and gave a substatially lower RMSE.</p>
+<pre class="r"><code>#split datasets yes/no
+AttritionYes = employee %&gt;%  filter(Attrition == &quot;Yes&quot;)
+AttritionNo = employee %&gt;%  filter(Attrition == &quot;No&quot;)
+
+#Redo Test/Train split - same as done before
+set.seed(9)
+trainInd = sample(dim(AttritionYes)[1],round(.8*dim(AttritionYes)[1]))
+trainYES = employee[trainInd,]
+testYES = employee[-trainInd,]
+
+trainInd = sample(dim(AttritionNo)[1],round(.8*dim(AttritionNo)[1]))
+train = AttritionNo[trainInd,]
+test = AttritionNo[-trainInd,]
+
+train = rbind(train,trainYES)
+test = rbind(test,testYES)
+table(test$Attribution)</code></pre>
+<pre><code>## &lt; table of extent 0 &gt;</code></pre>
+<pre class="r"><code>###  Added Interactions for Joblevel and Job Role, Business Travel and Gender, Total Working Years and Age, Years in current Role and  Current Manager
+
+lr.employee.inc &lt;-lm(MonthlyIncome ~ JobLevel*JobRole + Department  +  BusinessTravel*Gender + DistanceFromHome + EducationField*Education + EnvironmentSatisfaction + HourlyRate*MonthlyRate   + JobInvolvement  + JobSatisfaction + MaritalStatus  + NumCompaniesWorked  + OverTime + RelationshipSatisfaction + StockOptionLevel  + TotalWorkingYears*Age + TrainingTimesLastYear  + WorkLifeBalance + YearsSinceLastPromotion + YearsInCurrentRole*YearsWithCurrManager,data=train)
+
+RMSE = sqrt(mean(lr.employee.inc$residuals^2))
+RMSE</code></pre>
+<pre><code>## [1] 988.333</code></pre>
+<pre class="r"><code>####  Histogram of Residuals
+
+ hist(lr.employee.inc$residuals, col = &quot;blue&quot;, main = &quot;Histogram of Residuals&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Linear%20Regression%20Model-1.png" width="672" /></p>
+<pre class="r"><code>####  Shows voiation of Normality so Log Monthly Income
+
+lr.employee.inc &lt;-lm(log(MonthlyIncome) ~ JobLevel*JobRole + Department  +  BusinessTravel*Gender + DistanceFromHome + EducationField*Education + EnvironmentSatisfaction + HourlyRate*MonthlyRate   + JobInvolvement  + JobSatisfaction + MaritalStatus  + NumCompaniesWorked  + OverTime + RelationshipSatisfaction + StockOptionLevel  + TotalWorkingYears*Age + TrainingTimesLastYear  + WorkLifeBalance + YearsSinceLastPromotion + YearsInCurrentRole*YearsWithCurrManager,data=train)
+
+
+RMSE = sqrt(mean(lr.employee.inc$residuals^2))
+RMSE</code></pre>
+<pre><code>## [1] 0.1990818</code></pre>
+<pre class="r"><code>####  Histogram of Residuals
+
+ hist(lr.employee.inc$residuals, col = &quot;blue&quot;, main = &quot;Histogram of Residuals&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Linear%20Regression%20Model-2.png" width="672" /></p>
+<pre class="r"><code>summary(lr.employee.inc)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = log(MonthlyIncome) ~ JobLevel * JobRole + Department + 
+##     BusinessTravel * Gender + DistanceFromHome + EducationField * 
+##     Education + EnvironmentSatisfaction + HourlyRate * MonthlyRate + 
+##     JobInvolvement + JobSatisfaction + MaritalStatus + NumCompaniesWorked + 
+##     OverTime + RelationshipSatisfaction + StockOptionLevel + 
+##     TotalWorkingYears * Age + TrainingTimesLastYear + WorkLifeBalance + 
+##     YearsSinceLastPromotion + YearsInCurrentRole * YearsWithCurrManager, 
+##     data = train)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.74798 -0.11415 -0.00636  0.10787  0.63484 
+## 
+## Coefficients:
+##                                              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                                 7.259e+00  3.178e-01  22.840  &lt; 2e-16 ***
+## JobLevel                                    3.995e-01  4.472e-02   8.932  &lt; 2e-16 ***
+## JobRoleHuman Resources                     -2.913e-01  1.946e-01  -1.497 0.134810    
+## JobRoleLaboratory Technician               -2.197e-01  1.226e-01  -1.792 0.073546 .  
+## JobRoleManager                              1.112e+00  2.647e-01   4.199 3.06e-05 ***
+## JobRoleManufacturing Director              -1.878e-02  1.399e-01  -0.134 0.893219    
+## JobRoleResearch Director                    9.425e-01  1.864e-01   5.055 5.62e-07 ***
+## JobRoleResearch Scientist                  -4.559e-01  1.242e-01  -3.671 0.000262 ***
+## JobRoleSales Executive                      6.219e-02  1.475e-01   0.422 0.673498    
+## JobRoleSales Representative                -4.671e-01  1.860e-01  -2.511 0.012269 *  
+## DepartmentResearch &amp; Development            4.288e-02  1.003e-01   0.427 0.669164    
+## DepartmentSales                            -1.523e-02  1.016e-01  -0.150 0.880867    
+## BusinessTravelTravel_Frequently            -2.483e-02  5.285e-02  -0.470 0.638643    
+## BusinessTravelTravel_Rarely                -3.176e-02  4.570e-02  -0.695 0.487421    
+## GenderMale                                 -5.114e-02  5.344e-02  -0.957 0.338927    
+## DistanceFromHome                           -2.281e-04  1.064e-03  -0.214 0.830355    
+## EducationFieldLife Sciences                 2.528e-01  2.411e-01   1.049 0.294672    
+## EducationFieldMarketing                     3.732e-01  2.562e-01   1.457 0.145696    
+## EducationFieldMedical                       1.654e-01  2.425e-01   0.682 0.495600    
+## EducationFieldOther                         1.163e-01  2.700e-01   0.431 0.666780    
+## EducationFieldTechnical Degree              2.672e-01  2.569e-01   1.040 0.298840    
+## Education                                   7.224e-02  8.048e-02   0.898 0.369715    
+## EnvironmentSatisfaction                    -1.759e-02  7.747e-03  -2.270 0.023522 *  
+## HourlyRate                                  2.162e-04  9.496e-04   0.228 0.820003    
+## MonthlyRate                                 2.938e-06  4.042e-06   0.727 0.467669    
+## JobInvolvement                              1.148e-02  1.233e-02   0.931 0.352011    
+## JobSatisfaction                            -7.512e-03  7.497e-03  -1.002 0.316744    
+## MaritalStatusMarried                        6.230e-03  2.174e-02   0.287 0.774559    
+## MaritalStatusSingle                         2.311e-02  3.007e-02   0.768 0.442493    
+## NumCompaniesWorked                          1.326e-03  3.838e-03   0.346 0.729798    
+## OverTimeYes                                 4.002e-02  1.939e-02   2.064 0.039449 *  
+## RelationshipSatisfaction                   -4.694e-03  7.544e-03  -0.622 0.534033    
+## StockOptionLevel                           -3.258e-03  1.289e-02  -0.253 0.800567    
+## TotalWorkingYears                           3.172e-02  6.924e-03   4.581 5.58e-06 ***
+## Age                                         4.339e-03  1.830e-03   2.370 0.018066 *  
+## TrainingTimesLastYear                      -3.516e-03  6.751e-03  -0.521 0.602716    
+## WorkLifeBalance                             1.872e-03  1.195e-02   0.157 0.875553    
+## YearsSinceLastPromotion                    -2.711e-03  3.290e-03  -0.824 0.410237    
+## YearsInCurrentRole                          1.247e-02  4.825e-03   2.585 0.009948 ** 
+## YearsWithCurrManager                        1.770e-03  4.859e-03   0.364 0.715778    
+## JobLevel:JobRoleHuman Resources             1.321e-01  1.051e-01   1.257 0.209142    
+## JobLevel:JobRoleLaboratory Technician      -3.605e-02  5.929e-02  -0.608 0.543441    
+## JobLevel:JobRoleManager                    -2.259e-01  6.979e-02  -3.237 0.001271 ** 
+## JobLevel:JobRoleManufacturing Director      2.161e-02  5.470e-02   0.395 0.692975    
+## JobLevel:JobRoleResearch Director          -2.019e-01  5.737e-02  -3.519 0.000464 ***
+## JobLevel:JobRoleResearch Scientist          1.568e-01  6.273e-02   2.499 0.012702 *  
+## JobLevel:JobRoleSales Executive            -2.611e-03  5.266e-02  -0.050 0.960480    
+## JobLevel:JobRoleSales Representative        2.028e-01  1.237e-01   1.640 0.101477    
+## BusinessTravelTravel_Frequently:GenderMale  3.531e-02  6.744e-02   0.524 0.600745    
+## BusinessTravelTravel_Rarely:GenderMale      9.679e-02  5.711e-02   1.695 0.090563 .  
+## EducationFieldLife Sciences:Education      -6.753e-02  8.105e-02  -0.833 0.405017    
+## EducationFieldMarketing:Education          -1.075e-01  8.463e-02  -1.271 0.204253    
+## EducationFieldMedical:Education            -4.456e-02  8.172e-02  -0.545 0.585787    
+## EducationFieldOther:Education              -1.745e-02  9.020e-02  -0.193 0.846660    
+## EducationFieldTechnical Degree:Education   -7.508e-02  8.621e-02  -0.871 0.384109    
+## HourlyRate:MonthlyRate                     -3.352e-08  5.843e-08  -0.574 0.566363    
+## TotalWorkingYears:Age                      -5.213e-04  1.380e-04  -3.778 0.000173 ***
+## YearsInCurrentRole:YearsWithCurrManager    -1.220e-03  6.671e-04  -1.830 0.067782 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.2079 on 638 degrees of freedom
+## Multiple R-squared:  0.9092, Adjusted R-squared:  0.9011 
+## F-statistic: 112.1 on 57 and 638 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>plot(lr.employee.inc)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Linear%20Regression%20Model-3.png" width="672" /><img src="CaseStudy2_EllenLull_files/figure-html/Linear%20Regression%20Model-4.png" width="672" /><img src="CaseStudy2_EllenLull_files/figure-html/Linear%20Regression%20Model-5.png" width="672" /><img src="CaseStudy2_EllenLull_files/figure-html/Linear%20Regression%20Model-6.png" width="672" /></p>
+<p>Show detailed plots of Interactions</p>
+<pre class="r"><code>#####  Plot the Interactions #####
+
+
+
+employee %&gt;% ggplot(aes(x = JobLevel,y=JobRole,col=JobLevel)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Job Level by Job Role &quot;) +
+    xlab (&quot;Job Level&quot;) +
+    ylab (&quot;Job Role&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Interactions-1.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = TotalWorkingYears,y=Age)) + geom_point(col=&#39;Blue&#39;,pos=&#39;Jitter&#39;) + ggtitle(&quot;Total Working Years by Age &quot;) +
+    xlab (&quot;Total Working Years&quot;) +
+    ylab (&quot;Age&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Interactions-2.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = Gender, fill=BusinessTravel)) + geom_bar(stat=&#39;count&#39;) +
+    xlab (&quot;Gender&quot;) + ggtitle (&quot;Gender and Business Travel&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Interactions-3.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = Education, fill=EducationField)) + geom_bar(stat=&#39;count&#39;) +
+    xlab (&quot;Gender&quot;) + ggtitle (&quot;Gender and Business Travel&quot;)</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Plot%20Interactions-4.png" width="672" /></p>
+<p>Run the Linear Regression Employee Salary Predictions</p>
+<pre class="r"><code>######  Linear Model Predictions
+lr.employee.predI &lt;- data.frame(predict(lr.employee.inc, newdata  = test, type = &quot;response&quot;))
+newdf = NewIncome=data.frame(exp(lr.employee.predI))
+
+ 
+####  Run on competition dataset
+
+lr.employee.predI &lt;- data.frame(predict(lr.employee.inc, newdata  = employeenoinc, type = &quot;response&quot;))
+preddf = NewIncome=data.frame(exp(lr.employee.predI))
+names(preddf) &lt;- c(&quot;PredictIncome&quot;)
+IncomePred &lt;- cbind(employeenoinc[1],preddf)
+
+write.csv(IncomePred,&#39;c:/School Stuff/DS/Doing DS/Project2/Case2PredictionsLull Salary.csv&#39;)</code></pre>
+<p>Managers and Directors Rarely Leave but Job Satisfaction Rating is not Significant</p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = JobRole,y=Attrition,col=JobLevel)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Job Role, Job Level and Attrition&quot;) +
+    xlab (&quot;Job Role&quot;) +
+    ylab (&quot;Attrition&quot;) + theme(axis.text.x=element_text(angle=45, hjust=1))</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Job%20Role%20and%20Level%20and%20Attrition-1.png" width="672" /></p>
+<pre class="r"><code>employee %&gt;% ggplot(aes(x = JobRole,y=Attrition,col=JobSatisfaction)) + geom_point(pos=&#39;Jitter&#39;) + ggtitle(&quot;Job Role, Job Satisfaction and Attrition&quot;) +
+    xlab (&quot;Job Role&quot;) +
+    ylab (&quot;Attrition&quot;) + theme(axis.text.x=element_text(angle=45, hjust=1))</code></pre>
+<p><img src="CaseStudy2_EllenLull_files/figure-html/Job%20Role%20and%20Level%20and%20Attrition-2.png" width="672" /> Run a T-Test to show that Job Satisfaction is &lt; 3 for Manager, Manufacturing Director and Research Directors with Job Satisfaction &gt; 3</p>
+<pre class="r"><code> newemp &lt;- employee %&gt;% filter(JobLevel&gt;3 &amp; JobRole %in% c(&quot;Manager&quot;, &quot;Manufacturing Director&quot;,&quot;Research Director&quot;))
+
+t.test(newemp$JobSatisfaction, var.equal=F, mu=2,alternative=&#39;less&#39;) </code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  newemp$JobSatisfaction
+## t = 4.918, df = 82, p-value = 1
+## alternative hypothesis: true mean is less than 2
+## 95 percent confidence interval:
+##      -Inf 2.790066
+## sample estimates:
+## mean of x 
+##  2.590361</code></pre>
+</div>
+<div id="top-3-categories-of-the-varaibles-picked-in-the-best-model-these-changed-the-sensitivity-and-specificity-the-least" class="section level3">
+<h3>Top 3 Categories Of the varaibles picked in the best model, these changed the sensitivity and specificity the least</h3>
+<pre class="r"><code>AttritionYes = employee %&gt;%  filter(Attrition == &quot;Yes&quot;)
+AttritionNo = employee %&gt;%  filter(Attrition == &quot;No&quot;)
+
+###  Same test train split as before.  Picked top most influential Variables
+set.seed(9)
+trainInd = sample(seq(1,dim(AttritionYes)[1],1),round(.7*dim(AttritionYes)[1]))
+trainYES = AttritionYes[trainInd,]
+testYES = AttritionYes[-trainInd,]
+
+trainInd = sample(seq(1,dim(AttritionNo)[1],1),round(.7*dim(AttritionNo)[1]))
+train = AttritionNo[trainInd,]
+test = AttritionNo[-trainInd,]
+
+train = rbind(train,trainYES)
+test = rbind(test,testYES)
+ 
+
+ 
+lr.employee &lt;-glm(Attrition~TotalWorkingYears + JobRole + WorkLifeBalance,data=train,family=binomial(link=&quot;logit&quot;))
+
+lr.employee.pred2 &lt;- data.frame(predict(lr.employee, newdata  = test, type = &quot;response&quot;))
+lr.employee.pred2 = lr.employee.pred2 %&gt;% mutate(pred = ifelse(lr.employee.pred2 &lt;0.25, &quot;No&quot;, &quot;Yes&quot;))
+
+table(lr.employee.pred2$pred)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 220  41</code></pre>
+<pre class="r"><code>predtble = as.factor(lr.employee.pred2$pred)
+predtble  &lt;-relevel(predtble, ref = &quot;No&quot;) 
+Truth&lt;-test$Attrition
+confmtx = as.matrix(table(predtble,Truth))
+CM = confusionMatrix(confmtx)
+CM</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##         Truth
+## predtble  No Yes
+##      No  196  24
+##      Yes  23  18
+##                                           
+##                Accuracy : 0.8199          
+##                  95% CI : (0.7678, 0.8646)
+##     No Information Rate : 0.8391          
+##     P-Value [Acc &gt; NIR] : 0.8237          
+##                                           
+##                   Kappa : 0.3267          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 1.0000          
+##                                           
+##             Sensitivity : 0.8950          
+##             Specificity : 0.4286          
+##          Pos Pred Value : 0.8909          
+##          Neg Pred Value : 0.4390          
+##              Prevalence : 0.8391          
+##          Detection Rate : 0.7510          
+##    Detection Prevalence : 0.8429          
+##       Balanced Accuracy : 0.6618          
+##                                           
+##        &#39;Positive&#39; Class : No              
+## </code></pre>
+<p>Run a Naive Bayes on top 3 factors</p>
+<pre class="r"><code>employee$WorkYrFactor = cut(employee$TotalWorkingYears, breaks = c(0,10,20,30,50), labels = c(&quot;&lt; 10&quot;,&quot;10-20&quot;, &quot;20-30&quot;,&quot;Above 30&quot;))
+
+nbemploy &lt;- data.frame(WorkLifeBalance = factor(employee$WorkLifeBalance),JobLevel = factor(employee$JobLevel),employee$WorkYrFactor,Attrition=employee$Attrition)
+
+model = naiveBayes(Attrition~.,data = nbemploy)
+tp=predict(model,nbemploy[,c(&#39;Attrition&#39;)])
+Truth=employee$Attrition
+confmtx = as.matrix(table(tp,Truth))
+CM = confusionMatrix(confmtx)
+CM</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##      Truth
+## tp     No Yes
+##   No  730 140
+##   Yes   0   0
+##                                           
+##                Accuracy : 0.8391          
+##                  95% CI : (0.8129, 0.8629)
+##     No Information Rate : 0.8391          
+##     P-Value [Acc &gt; NIR] : 0.5225          
+##                                           
+##                   Kappa : 0               
+##                                           
+##  Mcnemar&#39;s Test P-Value : &lt;2e-16          
+##                                           
+##             Sensitivity : 1.0000          
+##             Specificity : 0.0000          
+##          Pos Pred Value : 0.8391          
+##          Neg Pred Value :    NaN          
+##              Prevalence : 0.8391          
+##          Detection Rate : 0.8391          
+##    Detection Prevalence : 1.0000          
+##       Balanced Accuracy : 0.5000          
+##                                           
+##        &#39;Positive&#39; Class : No              
+## </code></pre>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
