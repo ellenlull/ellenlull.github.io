@@ -306,14 +306,35 @@ $(document).ready(function () {
 <h2>Ellen Lull Section 401</h2>
 <div id="read-files-and-set-up-libraries" class="section level3">
 <h3>Read Files and Set up Libraries</h3>
-<p>Executive Summary This is a DDS Analytics project to predict Attrition and Monthly Income based on data 870 Employee Data Records. This data is to be used to create a model for classifying attrition by significant variables. Next it creates a prediction model for Attrition based on existing variables. It will identify the top three turnover predictors. Then we will create a model to predict monthly income for each of the employees. Predictions on test datasets are output to CSV files for both Attrition and Monthly Income. Finally, we will be looking at three Job roles with high level jobs that have low attrition levels and their employee job satisfaction ratings. This project consists of analysis to cover all of these areas and a video presentation</p>
-<pre class="r"><code>library(tidyverse)
-library(ggplot2)
+<p>Executive Summary This is a DDS Analytics project to predict Attrition and Monthly Income based on data 870 Employee Data Records. This data is to be used to create a model for classifying attrition by significant variables. Next it creates a prediction model for Attrition based on existing variables. It will identify the top three turnover predictors. Then we will create a model to predict monthly income for each of the employees. Predictions on test datasets are output to CSV files for both Attrition and Monthly Income. Finally, we will be looking at three Job roles with high level jobs that have low attrition levels and their employee job satisfaction ratings. This project consists of analysis to cover all of these areas and a video presentation<br />
+<a href="https://www.youtube.com/watch?v=aOa0AA3os3k&amp;feature=youtu.be">Click Here for Video Presentation</a></p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## Warning: package &#39;tidyverse&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## -- Attaching packages ------------------------------ tidyverse 1.3.0 --</code></pre>
+<pre><code>## v ggplot2 3.2.1     v purrr   0.3.3
+## v tibble  2.1.3     v dplyr   0.8.3
+## v tidyr   1.0.2     v stringr 1.4.0
+## v readr   1.3.1     v forcats 0.4.0</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## -- Conflicts --------------------------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(ggplot2)
 library(stringr)
 library(dplyr)
-library(caret)
-library(class)
-library(randomForest)</code></pre>
+library(caret)</code></pre>
+<pre><code>## Warning: package &#39;caret&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## 
+## Attaching package: &#39;caret&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     lift</code></pre>
+<pre class="r"><code>library(class)</code></pre>
+<pre><code>## Warning: package &#39;class&#39; was built under R version 3.6.2</code></pre>
+<pre class="r"><code>library(randomForest)</code></pre>
 <pre><code>## Warning: package &#39;randomForest&#39; was built under R version 3.6.3</code></pre>
 <pre><code>## randomForest 4.6-14</code></pre>
 <pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
@@ -922,7 +943,8 @@ employee_reducedrf = employee[,c(&#39;WorkLifeBalance&#39;,&#39;Education&#39;,&
 
 
 employee.rf &lt;-randomForest(Attrition~.,data=employee_reducedrf,mtry=10,ntree=500,importance=T)</code></pre>
-<pre><code>## Warning in randomForest.default(m, y, ...): invalid mtry: reset to within valid range</code></pre>
+<pre><code>## Warning in randomForest.default(m, y, ...): invalid mtry: reset to within valid
+## range</code></pre>
 <pre class="r"><code>summary(employee.rf)</code></pre>
 <pre><code>##                 Length Class  Mode     
 ## call               6   -none- call     
@@ -1041,65 +1063,124 @@ RMSE</code></pre>
 ## -0.74798 -0.11415 -0.00636  0.10787  0.63484 
 ## 
 ## Coefficients:
-##                                              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)                                 7.259e+00  3.178e-01  22.840  &lt; 2e-16 ***
-## JobLevel                                    3.995e-01  4.472e-02   8.932  &lt; 2e-16 ***
-## JobRoleHuman Resources                     -2.913e-01  1.946e-01  -1.497 0.134810    
-## JobRoleLaboratory Technician               -2.197e-01  1.226e-01  -1.792 0.073546 .  
-## JobRoleManager                              1.112e+00  2.647e-01   4.199 3.06e-05 ***
-## JobRoleManufacturing Director              -1.878e-02  1.399e-01  -0.134 0.893219    
-## JobRoleResearch Director                    9.425e-01  1.864e-01   5.055 5.62e-07 ***
-## JobRoleResearch Scientist                  -4.559e-01  1.242e-01  -3.671 0.000262 ***
-## JobRoleSales Executive                      6.219e-02  1.475e-01   0.422 0.673498    
-## JobRoleSales Representative                -4.671e-01  1.860e-01  -2.511 0.012269 *  
-## DepartmentResearch &amp; Development            4.288e-02  1.003e-01   0.427 0.669164    
-## DepartmentSales                            -1.523e-02  1.016e-01  -0.150 0.880867    
-## BusinessTravelTravel_Frequently            -2.483e-02  5.285e-02  -0.470 0.638643    
-## BusinessTravelTravel_Rarely                -3.176e-02  4.570e-02  -0.695 0.487421    
-## GenderMale                                 -5.114e-02  5.344e-02  -0.957 0.338927    
-## DistanceFromHome                           -2.281e-04  1.064e-03  -0.214 0.830355    
-## EducationFieldLife Sciences                 2.528e-01  2.411e-01   1.049 0.294672    
-## EducationFieldMarketing                     3.732e-01  2.562e-01   1.457 0.145696    
-## EducationFieldMedical                       1.654e-01  2.425e-01   0.682 0.495600    
-## EducationFieldOther                         1.163e-01  2.700e-01   0.431 0.666780    
-## EducationFieldTechnical Degree              2.672e-01  2.569e-01   1.040 0.298840    
-## Education                                   7.224e-02  8.048e-02   0.898 0.369715    
-## EnvironmentSatisfaction                    -1.759e-02  7.747e-03  -2.270 0.023522 *  
-## HourlyRate                                  2.162e-04  9.496e-04   0.228 0.820003    
-## MonthlyRate                                 2.938e-06  4.042e-06   0.727 0.467669    
-## JobInvolvement                              1.148e-02  1.233e-02   0.931 0.352011    
-## JobSatisfaction                            -7.512e-03  7.497e-03  -1.002 0.316744    
-## MaritalStatusMarried                        6.230e-03  2.174e-02   0.287 0.774559    
-## MaritalStatusSingle                         2.311e-02  3.007e-02   0.768 0.442493    
-## NumCompaniesWorked                          1.326e-03  3.838e-03   0.346 0.729798    
-## OverTimeYes                                 4.002e-02  1.939e-02   2.064 0.039449 *  
-## RelationshipSatisfaction                   -4.694e-03  7.544e-03  -0.622 0.534033    
-## StockOptionLevel                           -3.258e-03  1.289e-02  -0.253 0.800567    
-## TotalWorkingYears                           3.172e-02  6.924e-03   4.581 5.58e-06 ***
-## Age                                         4.339e-03  1.830e-03   2.370 0.018066 *  
-## TrainingTimesLastYear                      -3.516e-03  6.751e-03  -0.521 0.602716    
-## WorkLifeBalance                             1.872e-03  1.195e-02   0.157 0.875553    
-## YearsSinceLastPromotion                    -2.711e-03  3.290e-03  -0.824 0.410237    
-## YearsInCurrentRole                          1.247e-02  4.825e-03   2.585 0.009948 ** 
-## YearsWithCurrManager                        1.770e-03  4.859e-03   0.364 0.715778    
-## JobLevel:JobRoleHuman Resources             1.321e-01  1.051e-01   1.257 0.209142    
-## JobLevel:JobRoleLaboratory Technician      -3.605e-02  5.929e-02  -0.608 0.543441    
-## JobLevel:JobRoleManager                    -2.259e-01  6.979e-02  -3.237 0.001271 ** 
-## JobLevel:JobRoleManufacturing Director      2.161e-02  5.470e-02   0.395 0.692975    
-## JobLevel:JobRoleResearch Director          -2.019e-01  5.737e-02  -3.519 0.000464 ***
-## JobLevel:JobRoleResearch Scientist          1.568e-01  6.273e-02   2.499 0.012702 *  
-## JobLevel:JobRoleSales Executive            -2.611e-03  5.266e-02  -0.050 0.960480    
-## JobLevel:JobRoleSales Representative        2.028e-01  1.237e-01   1.640 0.101477    
-## BusinessTravelTravel_Frequently:GenderMale  3.531e-02  6.744e-02   0.524 0.600745    
-## BusinessTravelTravel_Rarely:GenderMale      9.679e-02  5.711e-02   1.695 0.090563 .  
-## EducationFieldLife Sciences:Education      -6.753e-02  8.105e-02  -0.833 0.405017    
-## EducationFieldMarketing:Education          -1.075e-01  8.463e-02  -1.271 0.204253    
-## EducationFieldMedical:Education            -4.456e-02  8.172e-02  -0.545 0.585787    
-## EducationFieldOther:Education              -1.745e-02  9.020e-02  -0.193 0.846660    
-## EducationFieldTechnical Degree:Education   -7.508e-02  8.621e-02  -0.871 0.384109    
-## HourlyRate:MonthlyRate                     -3.352e-08  5.843e-08  -0.574 0.566363    
-## TotalWorkingYears:Age                      -5.213e-04  1.380e-04  -3.778 0.000173 ***
-## YearsInCurrentRole:YearsWithCurrManager    -1.220e-03  6.671e-04  -1.830 0.067782 .  
+##                                              Estimate Std. Error t value
+## (Intercept)                                 7.259e+00  3.178e-01  22.840
+## JobLevel                                    3.995e-01  4.472e-02   8.932
+## JobRoleHuman Resources                     -2.913e-01  1.946e-01  -1.497
+## JobRoleLaboratory Technician               -2.197e-01  1.226e-01  -1.792
+## JobRoleManager                              1.112e+00  2.647e-01   4.199
+## JobRoleManufacturing Director              -1.878e-02  1.399e-01  -0.134
+## JobRoleResearch Director                    9.425e-01  1.864e-01   5.055
+## JobRoleResearch Scientist                  -4.559e-01  1.242e-01  -3.671
+## JobRoleSales Executive                      6.219e-02  1.475e-01   0.422
+## JobRoleSales Representative                -4.671e-01  1.860e-01  -2.511
+## DepartmentResearch &amp; Development            4.288e-02  1.003e-01   0.427
+## DepartmentSales                            -1.523e-02  1.016e-01  -0.150
+## BusinessTravelTravel_Frequently            -2.483e-02  5.285e-02  -0.470
+## BusinessTravelTravel_Rarely                -3.176e-02  4.570e-02  -0.695
+## GenderMale                                 -5.114e-02  5.344e-02  -0.957
+## DistanceFromHome                           -2.281e-04  1.064e-03  -0.214
+## EducationFieldLife Sciences                 2.528e-01  2.411e-01   1.049
+## EducationFieldMarketing                     3.732e-01  2.562e-01   1.457
+## EducationFieldMedical                       1.654e-01  2.425e-01   0.682
+## EducationFieldOther                         1.163e-01  2.700e-01   0.431
+## EducationFieldTechnical Degree              2.672e-01  2.569e-01   1.040
+## Education                                   7.224e-02  8.048e-02   0.898
+## EnvironmentSatisfaction                    -1.759e-02  7.747e-03  -2.270
+## HourlyRate                                  2.162e-04  9.496e-04   0.228
+## MonthlyRate                                 2.938e-06  4.042e-06   0.727
+## JobInvolvement                              1.148e-02  1.233e-02   0.931
+## JobSatisfaction                            -7.512e-03  7.497e-03  -1.002
+## MaritalStatusMarried                        6.230e-03  2.174e-02   0.287
+## MaritalStatusSingle                         2.311e-02  3.007e-02   0.768
+## NumCompaniesWorked                          1.326e-03  3.838e-03   0.346
+## OverTimeYes                                 4.002e-02  1.939e-02   2.064
+## RelationshipSatisfaction                   -4.694e-03  7.544e-03  -0.622
+## StockOptionLevel                           -3.258e-03  1.289e-02  -0.253
+## TotalWorkingYears                           3.172e-02  6.924e-03   4.581
+## Age                                         4.339e-03  1.830e-03   2.370
+## TrainingTimesLastYear                      -3.516e-03  6.751e-03  -0.521
+## WorkLifeBalance                             1.872e-03  1.195e-02   0.157
+## YearsSinceLastPromotion                    -2.711e-03  3.290e-03  -0.824
+## YearsInCurrentRole                          1.247e-02  4.825e-03   2.585
+## YearsWithCurrManager                        1.770e-03  4.859e-03   0.364
+## JobLevel:JobRoleHuman Resources             1.321e-01  1.051e-01   1.257
+## JobLevel:JobRoleLaboratory Technician      -3.605e-02  5.929e-02  -0.608
+## JobLevel:JobRoleManager                    -2.259e-01  6.979e-02  -3.237
+## JobLevel:JobRoleManufacturing Director      2.161e-02  5.470e-02   0.395
+## JobLevel:JobRoleResearch Director          -2.019e-01  5.737e-02  -3.519
+## JobLevel:JobRoleResearch Scientist          1.568e-01  6.273e-02   2.499
+## JobLevel:JobRoleSales Executive            -2.611e-03  5.266e-02  -0.050
+## JobLevel:JobRoleSales Representative        2.028e-01  1.237e-01   1.640
+## BusinessTravelTravel_Frequently:GenderMale  3.531e-02  6.744e-02   0.524
+## BusinessTravelTravel_Rarely:GenderMale      9.679e-02  5.711e-02   1.695
+## EducationFieldLife Sciences:Education      -6.753e-02  8.105e-02  -0.833
+## EducationFieldMarketing:Education          -1.075e-01  8.463e-02  -1.271
+## EducationFieldMedical:Education            -4.456e-02  8.172e-02  -0.545
+## EducationFieldOther:Education              -1.745e-02  9.020e-02  -0.193
+## EducationFieldTechnical Degree:Education   -7.508e-02  8.621e-02  -0.871
+## HourlyRate:MonthlyRate                     -3.352e-08  5.843e-08  -0.574
+## TotalWorkingYears:Age                      -5.213e-04  1.380e-04  -3.778
+## YearsInCurrentRole:YearsWithCurrManager    -1.220e-03  6.671e-04  -1.830
+##                                            Pr(&gt;|t|)    
+## (Intercept)                                 &lt; 2e-16 ***
+## JobLevel                                    &lt; 2e-16 ***
+## JobRoleHuman Resources                     0.134810    
+## JobRoleLaboratory Technician               0.073546 .  
+## JobRoleManager                             3.06e-05 ***
+## JobRoleManufacturing Director              0.893219    
+## JobRoleResearch Director                   5.62e-07 ***
+## JobRoleResearch Scientist                  0.000262 ***
+## JobRoleSales Executive                     0.673498    
+## JobRoleSales Representative                0.012269 *  
+## DepartmentResearch &amp; Development           0.669164    
+## DepartmentSales                            0.880867    
+## BusinessTravelTravel_Frequently            0.638643    
+## BusinessTravelTravel_Rarely                0.487421    
+## GenderMale                                 0.338927    
+## DistanceFromHome                           0.830355    
+## EducationFieldLife Sciences                0.294672    
+## EducationFieldMarketing                    0.145696    
+## EducationFieldMedical                      0.495600    
+## EducationFieldOther                        0.666780    
+## EducationFieldTechnical Degree             0.298840    
+## Education                                  0.369715    
+## EnvironmentSatisfaction                    0.023522 *  
+## HourlyRate                                 0.820003    
+## MonthlyRate                                0.467669    
+## JobInvolvement                             0.352011    
+## JobSatisfaction                            0.316744    
+## MaritalStatusMarried                       0.774559    
+## MaritalStatusSingle                        0.442493    
+## NumCompaniesWorked                         0.729798    
+## OverTimeYes                                0.039449 *  
+## RelationshipSatisfaction                   0.534033    
+## StockOptionLevel                           0.800567    
+## TotalWorkingYears                          5.58e-06 ***
+## Age                                        0.018066 *  
+## TrainingTimesLastYear                      0.602716    
+## WorkLifeBalance                            0.875553    
+## YearsSinceLastPromotion                    0.410237    
+## YearsInCurrentRole                         0.009948 ** 
+## YearsWithCurrManager                       0.715778    
+## JobLevel:JobRoleHuman Resources            0.209142    
+## JobLevel:JobRoleLaboratory Technician      0.543441    
+## JobLevel:JobRoleManager                    0.001271 ** 
+## JobLevel:JobRoleManufacturing Director     0.692975    
+## JobLevel:JobRoleResearch Director          0.000464 ***
+## JobLevel:JobRoleResearch Scientist         0.012702 *  
+## JobLevel:JobRoleSales Executive            0.960480    
+## JobLevel:JobRoleSales Representative       0.101477    
+## BusinessTravelTravel_Frequently:GenderMale 0.600745    
+## BusinessTravelTravel_Rarely:GenderMale     0.090563 .  
+## EducationFieldLife Sciences:Education      0.405017    
+## EducationFieldMarketing:Education          0.204253    
+## EducationFieldMedical:Education            0.585787    
+## EducationFieldOther:Education              0.846660    
+## EducationFieldTechnical Degree:Education   0.384109    
+## HourlyRate:MonthlyRate                     0.566363    
+## TotalWorkingYears:Age                      0.000173 ***
+## YearsInCurrentRole:YearsWithCurrManager    0.067782 .  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 

@@ -348,35 +348,49 @@ beer &lt;- read.delim(&quot;C:/School Stuff/DS/Doing DS/Project1/beers.csv&quot;
 <pre class="r"><code>brewbeer &lt;- merge(beer,breweries,by.x=&quot;Brewery_id&quot;, by.y = &quot;Brew_ID&quot;)
  
 head(brewbeer,6)</code></pre>
-<pre><code>##   Brewery_id        Name.x Beer_ID   ABV IBU                               Style Ounces
-## 1          1  Get Together    2692 0.045  50                        American IPA     16
-## 2          1 Maggie&#39;s Leap    2691 0.049  26                  Milk / Sweet Stout     16
-## 3          1    Wall&#39;s End    2690 0.048  19                   English Brown Ale     16
-## 4          1       Pumpion    2689 0.060  38                         Pumpkin Ale     16
-## 5          1    Stronghold    2688 0.060  25                     American Porter     16
-## 6          1   Parapet ESB    2687 0.056  47 Extra Special / Strong Bitter (ESB)     16
-##               Name.y        City State
-## 1 NorthGate Brewing  Minneapolis    MN
-## 2 NorthGate Brewing  Minneapolis    MN
-## 3 NorthGate Brewing  Minneapolis    MN
-## 4 NorthGate Brewing  Minneapolis    MN
-## 5 NorthGate Brewing  Minneapolis    MN
-## 6 NorthGate Brewing  Minneapolis    MN</code></pre>
+<pre><code>##   Brewery_id        Name.x Beer_ID   ABV IBU
+## 1          1  Get Together    2692 0.045  50
+## 2          1 Maggie&#39;s Leap    2691 0.049  26
+## 3          1    Wall&#39;s End    2690 0.048  19
+## 4          1       Pumpion    2689 0.060  38
+## 5          1    Stronghold    2688 0.060  25
+## 6          1   Parapet ESB    2687 0.056  47
+##                                 Style Ounces             Name.y
+## 1                        American IPA     16 NorthGate Brewing 
+## 2                  Milk / Sweet Stout     16 NorthGate Brewing 
+## 3                   English Brown Ale     16 NorthGate Brewing 
+## 4                         Pumpkin Ale     16 NorthGate Brewing 
+## 5                     American Porter     16 NorthGate Brewing 
+## 6 Extra Special / Strong Bitter (ESB)     16 NorthGate Brewing 
+##          City State
+## 1 Minneapolis    MN
+## 2 Minneapolis    MN
+## 3 Minneapolis    MN
+## 4 Minneapolis    MN
+## 5 Minneapolis    MN
+## 6 Minneapolis    MN</code></pre>
 <pre class="r"><code>tail(brewbeer,6)</code></pre>
-<pre><code>##      Brewery_id                    Name.x Beer_ID   ABV IBU                   Style Ounces
-## 2405        556             Pilsner Ukiah      98 0.055  NA         German Pilsener     12
-## 2406        557  Heinnieweisse Weissebier      52 0.049  NA              Hefeweizen     12
-## 2407        557           Snapperhead IPA      51 0.068  NA            American IPA     12
-## 2408        557         Moo Thunder Stout      50 0.049  NA      Milk / Sweet Stout     12
-## 2409        557         Porkslap Pale Ale      49 0.043  NA American Pale Ale (APA)     12
-## 2410        558 Urban Wilderness Pale Ale      30 0.049  NA        English Pale Ale     12
-##                             Name.y          City State
-## 2405         Ukiah Brewing Company         Ukiah    CA
-## 2406       Butternuts Beer and Ale Garrattsville    NY
-## 2407       Butternuts Beer and Ale Garrattsville    NY
-## 2408       Butternuts Beer and Ale Garrattsville    NY
-## 2409       Butternuts Beer and Ale Garrattsville    NY
-## 2410 Sleeping Lady Brewing Company     Anchorage    AK</code></pre>
+<pre><code>##      Brewery_id                    Name.x Beer_ID   ABV IBU
+## 2405        556             Pilsner Ukiah      98 0.055  NA
+## 2406        557  Heinnieweisse Weissebier      52 0.049  NA
+## 2407        557           Snapperhead IPA      51 0.068  NA
+## 2408        557         Moo Thunder Stout      50 0.049  NA
+## 2409        557         Porkslap Pale Ale      49 0.043  NA
+## 2410        558 Urban Wilderness Pale Ale      30 0.049  NA
+##                        Style Ounces                        Name.y
+## 2405         German Pilsener     12         Ukiah Brewing Company
+## 2406              Hefeweizen     12       Butternuts Beer and Ale
+## 2407            American IPA     12       Butternuts Beer and Ale
+## 2408      Milk / Sweet Stout     12       Butternuts Beer and Ale
+## 2409 American Pale Ale (APA)     12       Butternuts Beer and Ale
+## 2410        English Pale Ale     12 Sleeping Lady Brewing Company
+##               City State
+## 2405         Ukiah    CA
+## 2406 Garrattsville    NY
+## 2407 Garrattsville    NY
+## 2408 Garrattsville    NY
+## 2409 Garrattsville    NY
+## 2410     Anchorage    AK</code></pre>
 </div>
 <div id="question-3" class="section level4">
 <h4>Question #3</h4>
@@ -513,26 +527,26 @@ confusionMatrix(test$Type,classifications)</code></pre>
 ## 
 ##           Reference
 ## Prediction Ale IPA
-##        Ale 266  31
-##        IPA  22 141
+##        Ale 280  16
+##        IPA  32 132
 ##                                          
-##                Accuracy : 0.8848         
-##                  95% CI : (0.852, 0.9125)
-##     No Information Rate : 0.6261         
-##     P-Value [Acc &gt; NIR] : &lt;2e-16         
+##                Accuracy : 0.8957         
+##                  95% CI : (0.864, 0.9221)
+##     No Information Rate : 0.6783         
+##     P-Value [Acc &gt; NIR] : &lt; 2e-16        
 ##                                          
-##                   Kappa : 0.7513         
+##                   Kappa : 0.7675         
 ##                                          
-##  Mcnemar&#39;s Test P-Value : 0.2718         
+##  Mcnemar&#39;s Test P-Value : 0.03038        
 ##                                          
-##             Sensitivity : 0.9236         
-##             Specificity : 0.8198         
-##          Pos Pred Value : 0.8956         
-##          Neg Pred Value : 0.8650         
-##              Prevalence : 0.6261         
-##          Detection Rate : 0.5783         
-##    Detection Prevalence : 0.6457         
-##       Balanced Accuracy : 0.8717         
+##             Sensitivity : 0.8974         
+##             Specificity : 0.8919         
+##          Pos Pred Value : 0.9459         
+##          Neg Pred Value : 0.8049         
+##              Prevalence : 0.6783         
+##          Detection Rate : 0.6087         
+##    Detection Prevalence : 0.6435         
+##       Balanced Accuracy : 0.8947         
 ##                                          
 ##        &#39;Positive&#39; Class : Ale            
 ## </code></pre>

@@ -14,7 +14,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Read Files and Set up Libraries
 
 Executive Summary
-This is a DDS Analytics project to predict Attrition and Monthly Income based on data 870 Employee Data Records.  This data is to be used to create a model for classifying attrition by significant variables.  Next it creates a prediction model for Attrition based on existing variables.   It will identify the top three turnover predictors.  Then we will create a model to predict monthly income for each of the employees.   Predictions on test datasets are output to CSV files for both Attrition and Monthly Income.   Finally, we will be looking at three Job roles with high level jobs that have low attrition levels and their employee job satisfaction ratings. This project consists of analysis to cover all of these areas and a video presentation
+This is a DDS Analytics project to predict Attrition and Monthly Income based on data 870 Employee Data Records.    This data is to be used to create a model for classifying attrition by significant variables.    Next it creates a prediction model for Attrition based on existing variables.     It will identify the top three turnover predictors.  Then we will create a model to predict monthly income for each of the employees.     Predictions on test datasets are output to CSV files for both Attrition and Monthly Income.     Finally, we will be looking at three Job roles with high level jobs that have low attrition levels and their employee job satisfaction ratings. This project consists of analysis to cover all of these areas and a video presentation  
+[Click Here for Video Presentation](https://www.youtube.com/watch?v=aOa0AA3os3k&feature=youtu.be)
 ```{r Initialize}
 library(tidyverse)
 library(ggplot2)
